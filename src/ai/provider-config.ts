@@ -1,6 +1,6 @@
 import type { ProviderType } from "./types";
 
-export const AI_PROVIDERS = ["evolink", "kie", "apimart"] as const;
+export const AI_PROVIDERS = ["autodl"] as const;
 
 export function parseProviderType(
   value: string | null | undefined
@@ -30,12 +30,8 @@ export function getProviderApiKey(
   provider: ProviderType
 ): string | undefined {
   switch (provider) {
-    case "evolink":
-      return process.env.EVOLINK_API_KEY;
-    case "kie":
-      return process.env.KIE_API_KEY;
-    case "apimart":
-      return process.env.APIMART_API_KEY;
+    case "autodl":
+      return process.env.AUTODL_API_TOKEN;
     default:
       return undefined;
   }

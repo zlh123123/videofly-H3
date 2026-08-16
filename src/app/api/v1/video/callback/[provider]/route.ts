@@ -13,7 +13,7 @@ export async function POST(
     const providerType = provider as ProviderType;
 
     // Validate provider type
-    if (!["evolink", "kie", "apimart"].includes(providerType)) {
+    if (!["autodl"].includes(providerType)) {
       return apiError("Invalid provider", 400);
     }
 

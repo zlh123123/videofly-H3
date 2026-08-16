@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
     const results: Array<{
       uuid: string;
       status: string;
-      evolinkStatus: string;
+      providerStatus: string;
       action: string;
       videoUrl?: string;
       thumbnailUrl?: string;
@@ -56,15 +56,14 @@ export async function GET(request: NextRequest) {
         results.push({
           uuid: video.uuid,
           status: video.status,
-          evolinkStatus: "no_task_id",
+          providerStatus: "no_task_id",
           action: "skipped",
         });
         continue;
       }
 
       try {
-        // 从 evolink 获取状态
-        const provider = getProvider("evolink");
+        const provider = getProvider("autodl");
         const taskStatus = await provider.getTaskStatus(video.externalTaskId);
 
         if (taskStatus.status === "completed" && taskStatus.videoUrl) {
@@ -72,7 +71,7 @@ export async function GET(request: NextRequest) {
           results.push({
             uuid: video.uuid,
             status: video.status,
-            evolinkStatus: taskStatus.status,
+            providerStatus: taskStatus.status,
             action: "ready_to_complete",
             videoUrl: taskStatus.videoUrl,
             thumbnailUrl: taskStatus.thumbnailUrl,
@@ -81,14 +80,14 @@ export async function GET(request: NextRequest) {
           results.push({
             uuid: video.uuid,
             status: video.status,
-            evolinkStatus: "failed",
+            providerStatus: "failed",
             action: "mark_as_failed",
           });
         } else {
           results.push({
             uuid: video.uuid,
             status: video.status,
-            evolinkStatus: taskStatus.status || "unknown",
+            providerStatus: taskStatus.status || "unknown",
             action: "still_processing",
           });
         }
@@ -96,7 +95,7 @@ export async function GET(request: NextRequest) {
         results.push({
           uuid: video.uuid,
           status: video.status,
-          evolinkStatus: "error",
+          providerStatus: "error",
           action: "query_failed",
           error: error instanceof Error ? error.message : "Unknown error",
         });
@@ -160,7 +159,7 @@ export async function POST(request: NextRequest) {
     const { videoService } = await import("@/services/video");
     const result = {
       taskId: video.externalTaskId || "",
-      provider: (video.provider || "evolink") as "evolink" | "kie",
+      provider: (video.provider || "autodl") as "autodl",
       status: "completed" as const,
       progress: 100,
       videoUrl: videoUrl,

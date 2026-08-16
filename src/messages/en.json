@@ -1,7 +1,7 @@
 {
   "Metadata": {
     "title": "VideoFly - AI Video Generation Platform",
-    "description": "Create stunning AI-generated videos in minutes with Sora 2, Veo 3.1, and more"
+    "description": "Create stunning AI-generated videos in minutes with AutoDL H3"
   },
   "Common": {
     "login": "Login",
@@ -27,7 +27,7 @@
     "settings": "Settings"
   },
   "Hero": {
-    "badge": "Powered by Sora 2, Veo 3.1 & more",
+    "badge": "Powered by AutoDL H3",
     "title": "Transform Your Ideas Into Stunning Videos",
     "subtitle": "with AI",
     "description": "Create professional AI-generated videos in minutes. From text to video, image to video, or enhance existing footage.",
@@ -207,7 +207,7 @@
     },
     "aiModels": {
       "question": "Which AI models do you use?",
-      "answer": "We integrate the industry's best video generation models, including Sora 2, Veo 3.1, and others. We continuously update our platform to include the latest and most capable models available."
+      "answer": "We provide AutoDL H3 text-to-video, multi-reference, and first/last-frame video generation."
     },
     "credits": {
       "question": "How does the credit system work?",
@@ -385,7 +385,7 @@
       "features": "With VideoFly, you can:",
       "featuresList": {
         "generate": "Generate stunning AI videos in minutes",
-        "models": "Use multiple AI models like Sora 2, Veo 3.1, and more",
+        "models": "Use AutoDL H3 text-to-video, multi-reference, and first/last-frame video",
         "share": "Download and share your creations anywhere"
       },
       "cta": "Start Creating Videos",
@@ -424,7 +424,7 @@
       "features": "With VideoFly, you can:",
       "featuresList": {
         "generate": "Generate stunning AI videos in minutes",
-        "models": "Use multiple AI models like Sora 2, Veo 3.1, and more",
+        "models": "Use AutoDL H3 text-to-video, multi-reference, and first/last-frame video",
         "share": "Download and share your creations anywhere"
       },
       "cta": "Start Creating Videos",

@@ -1,7 +1,5 @@
 import type { AIVideoProvider, ProviderType } from "./types";
-import { EvolinkProvider } from "./providers/evolink";
-import { KieProvider } from "./providers/kie";
-import { ApimartProvider } from "./providers/apimart";
+import { AutoDLProvider } from "./providers/autodl";
 import {
   getConfiguredAIProvider,
   requireProviderApiKey,
@@ -14,14 +12,8 @@ export function getProvider(type: ProviderType): AIVideoProvider {
 
   let provider: AIVideoProvider;
   switch (type) {
-    case "evolink":
-      provider = new EvolinkProvider(requireProviderApiKey("evolink"));
-      break;
-    case "kie":
-      provider = new KieProvider(requireProviderApiKey("kie"));
-      break;
-    case "apimart":
-      provider = new ApimartProvider(requireProviderApiKey("apimart"));
+    case "autodl":
+      provider = new AutoDLProvider(requireProviderApiKey("autodl"));
       break;
     default:
       throw new Error(`Unknown provider: ${type}`);
@@ -32,7 +24,7 @@ export function getProvider(type: ProviderType): AIVideoProvider {
 }
 
 export function getDefaultProvider(): AIVideoProvider {
-  const type = getConfiguredAIProvider() || "evolink";
+  const type = getConfiguredAIProvider() || "autodl";
   return getProvider(type);
 }
 

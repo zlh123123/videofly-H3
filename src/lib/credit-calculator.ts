@@ -170,24 +170,7 @@ function calculateSeedanceCredits(params: CreditCalculationParams): number {
 export function calculateVideoCredits(params: CreditCalculationParams): number {
   const { model } = params;
 
-  // 根据模型 ID 使用不同的计算逻辑
-  switch (model.id) {
-    case "sora-2":
-      return calculateSora2Credits(params);
-
-    case "wan2.6":
-      return calculateWan26Credits(params);
-
-    case "veo-3.1":
-      return calculateVeo31Credits(params);
-
-    case "seedance-1.5-pro":
-      return calculateSeedanceCredits(params);
-
-    default:
-      // 默认计算：基础积分 × 输出数量
-      return model.creditCost * params.outputNumber;
-  }
+  return model.creditCost * params.outputNumber;
 }
 
 // ============================================================================
@@ -255,29 +238,12 @@ export function getCreditRangeText(model: VideoModel): string {
   // 计算最大积分（假设最大时长/输出数量）
   let maxCredits = minCredits;
 
-  if (model.id === "sora-2") {
-    maxCredits = calculateVideoCredits({
-      model,
-      duration: "15s",
-      outputNumber: 1,
-    });
-  } else if (model.id === "wan2.6") {
-    maxCredits = calculateVideoCredits({
-      model,
-      duration: "15s",
-      resolution: "1080P",
-      outputNumber: 1,
-    });
-  } else if (model.id === "veo-3.1") {
-    maxCredits = 60; // 固定价格
-  } else if (model.id === "seedance-1.5-pro") {
-    maxCredits = calculateVideoCredits({
-      model,
-      duration: "12s",
-      resolution: "1080P",
-      outputNumber: 1,
-    });
-  }
+  maxCredits = calculateVideoCredits({
+    model,
+    duration: model.maxDuration || "10s",
+    resolution: model.resolutions?.at(-1),
+    outputNumber: 1,
+  });
 
   if (minCredits === maxCredits) {
     return formatCredits(minCredits);

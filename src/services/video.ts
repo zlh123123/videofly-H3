@@ -18,10 +18,11 @@ import { getConfiguredAIProvider } from "@/ai/provider-config";
 export interface GenerateVideoParams {
   userId: string;
   prompt: string;
-  model: string; // "sora-2"
+  model: string;
   duration?: number;
   aspectRatio?: string; // "16:9" | "9:16"
   quality?: string; // "standard" | "high"
+  resolution?: string;
   imageUrl?: string; // image-to-video
   imageUrls?: string[]; // image-to-video (multi-image)
   mode?: string;
@@ -241,6 +242,7 @@ export class VideoService {
         duration: effectiveDuration,  // ✅ 使用计算后的时长
         aspectRatio: params.aspectRatio,
         quality: params.quality,
+        resolution: params.resolution,
         imageUrl: params.imageUrl,
         imageUrls: params.imageUrls,
         mode: resolvedMode,

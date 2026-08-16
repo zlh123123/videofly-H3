@@ -154,69 +154,23 @@ export const CREDITS_CONFIG = {
       .map(([modelId, pricing]) => {
         // 模型基础配置（从 defaults.ts 获取）
         const baseConfigs: Record<string, Omit<ModelConfig, "creditCost">> = {
-          "sora-2": {
-            id: "sora-2",
-            name: "Sora 2",
-            provider: "evolink" as const,
-            description: "models.sora2.description",
-            supportImageToVideo: true,
-            maxDuration: 15,
-            durations: [10, 15],
-            aspectRatios: ["16:9", "9:16"],
+          "h3-text-to-video": {
+            id: "h3-text-to-video", name: "H3 文生视频", provider: "autodl" as const,
+            description: "H3 文本生成视频", supportImageToVideo: false, maxDuration: 10,
+            durations: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], aspectRatios: ["16:9", "9:16"],
+            qualities: ["480p", "768p"],
           },
-          "wan2.6": {
-            id: "wan2.6",
-            name: "Wan 2.6",
-            provider: "evolink" as const,
-            description: "models.wan26.description",
-            supportImageToVideo: true,
-            maxDuration: 15,
-            durations: [5, 10, 15],
-            aspectRatios: ["16:9", "9:16", "1:1", "4:3", "3:4"],
-            qualities: ["720P", "1080P"],
+          "h3-reference-to-video": {
+            id: "h3-reference-to-video", name: "H3 多参考图生成视频", provider: "autodl" as const,
+            description: "H3 使用多张参考图生成视频", supportImageToVideo: true, maxDuration: 10,
+            durations: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], aspectRatios: ["16:9", "9:16"],
+            qualities: ["480p", "768p", "1080p"],
           },
-          "veo-3.1": {
-            id: "veo-3.1",
-            name: "Veo 3.1",
-            provider: "evolink" as const,
-            description: "models.veo31.description",
-            supportImageToVideo: true,
-            maxDuration: 8,
-            durations: [8],
-            aspectRatios: ["16:9", "9:16"],
-          },
-          "seedance-1.5-pro": {
-            id: "seedance-1.5-pro",
-            name: "Seedance 1.5 Pro",
-            provider: "apimart" as const,
-            description: "models.seedance.description",
-            supportImageToVideo: true,
-            maxDuration: 12,
-            durations: [4, 5, 6, 8, 10, 12],
-            aspectRatios: ["16:9", "9:16", "1:1", "4:3", "3:4", "21:9"],
-            qualities: ["480P", "720P", "1080P"],
-          },
-          "seedance-1.0-pro-fast": {
-            id: "seedance-1.0-pro-fast",
-            name: "Seedance 1.0 Pro Fast",
-            provider: "apimart" as const,
-            description: "models.seedance10fast.description",
-            supportImageToVideo: true,
-            maxDuration: 12,
-            durations: [2, 4, 5, 6, 8, 10, 12],
-            aspectRatios: ["16:9", "9:16", "1:1", "4:3", "3:4", "21:9"],
-            qualities: ["480P", "720P", "1080P"],
-          },
-          "seedance-1.0-pro-quality": {
-            id: "seedance-1.0-pro-quality",
-            name: "Seedance 1.0 Pro Quality",
-            provider: "apimart" as const,
-            description: "models.seedance10quality.description",
-            supportImageToVideo: true,
-            maxDuration: 12,
-            durations: [2, 4, 5, 6, 8, 10, 12],
-            aspectRatios: ["16:9", "9:16", "1:1", "4:3", "3:4", "21:9"],
-            qualities: ["480P", "720P", "1080P"],
+          "h3-frames-to-video": {
+            id: "h3-frames-to-video", name: "H3 首尾帧生成视频", provider: "autodl" as const,
+            description: "H3 使用首尾帧生成视频", supportImageToVideo: true, maxDuration: 10,
+            durations: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], aspectRatios: ["16:9", "9:16"],
+            qualities: ["480p", "768p"],
           },
         };
 
@@ -342,56 +296,12 @@ export function calculateModelCredits(
 
   let credits = 0;
 
-  // 根据模型使用不同的计算逻辑
+  // AutoDL H3 按模型和时长计费
   switch (modelId) {
-    case "sora-2": {
-      // Sora 2: 固定价格（10s=2积分, 15s=3积分）
-      credits = params.duration === 15 ? 3 : 2;
-      break;
-    }
-
-    case "wan2.6": {
-      // Wan 2.6: 每秒 5 积分（5s=25, 10s=50）
-      credits = params.duration * 5;
-      if (isHighQuality) {
-        credits = credits * 1.67; // 1080p
-      }
-      break;
-    }
-
-    case "veo-3.1": {
-      // Veo 3.1: 固定 10 积分
-      credits = 10;
-      break;
-    }
-
-    case "seedance-1.5-pro": {
-      // Seedance: 按秒计费，720p 有音频 = 4积分/秒
-      let perSecond = 4; // 720p 有音频
-      if (isHighQuality) {
-        perSecond = 8; // 1080p 有音频
-      }
-      credits = params.duration * perSecond;
-      break;
-    }
-
-    case "seedance-1.0-pro-fast": {
-      // Seedance 1.0 Fast: 按秒计费
-      let perSecondFast = 3;
-      if (isHighQuality) {
-        perSecondFast = 6;
-      }
-      credits = params.duration * perSecondFast;
-      break;
-    }
-
-    case "seedance-1.0-pro-quality": {
-      // Seedance 1.0 Quality: 按秒计费，高质量
-      let perSecondQuality = 5;
-      if (isHighQuality) {
-        perSecondQuality = 10;
-      }
-      credits = params.duration * perSecondQuality;
+    case "h3-text-to-video":
+    case "h3-reference-to-video":
+    case "h3-frames-to-video": {
+      credits = params.duration * (modelId === "h3-text-to-video" ? 4 : 5);
       break;
     }
 

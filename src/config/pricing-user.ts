@@ -248,7 +248,7 @@ export const CREDIT_PACKAGES: CreditPackageConfig[] = [
  * 4. **Seedance 1.5 Pro**: 按秒计费, 默认有音频
  *                          480p: 1.636 Credits/秒 → 2 积分/秒
  *                          720p: 3.557 Credits/秒 → 4 积分/秒
- *                          1080p: 7.932 Credits/秒 → 8 积分/秒
+ *                          AutoDL H3 按秒计费
  *
  * 计费规则说明：
  * - baseCredits: 基础积分（最短时长、最低画质）
@@ -256,51 +256,9 @@ export const CREDIT_PACKAGES: CreditPackageConfig[] = [
  * - qualityMultiplier: 画质乘数（1080p vs 720p）
  */
 export const VIDEO_MODEL_PRICING: Record<string, VideoModelPricing> = {
-  /** Seedance 1.5 Pro - 按秒计费（默认有音频） */
-  "seedance-1.5-pro": {
-    baseCredits: 0,
-    perSecond: 4, // 720p 有音频: 3.557 Credits/秒 → 4 积分/秒
-    qualityMultiplier: 2, // 1080p = 720p × 2
-    enabled: true,
-  },
-
-  /** Seedance 1.0 Pro Fast - 快速生成（APImart） */
-  "seedance-1.0-pro-fast": {
-    baseCredits: 0,
-    perSecond: 3, // 按秒计费
-    qualityMultiplier: 2,
-    enabled: true,
-  },
-
-  /** Seedance 1.0 Pro Quality - 高质量生成（APImart） */
-  "seedance-1.0-pro-quality": {
-    baseCredits: 0,
-    perSecond: 5, // 高质量，每秒积分更高
-    qualityMultiplier: 2,
-    enabled: true,
-  },
-
-  /** Veo 3.1 Fast Lite - Google (暂时隐藏) */
-  "veo-3.1": {
-    baseCredits: 10,
-    perSecond: 0,
-    enabled: false,
-  },
-
-  /** Sora 2 Lite - OpenAI (暂时隐藏) */
-  "sora-2": {
-    baseCredits: 2,
-    perSecond: 0,
-    enabled: false,
-  },
-
-  /** Wan 2.6 (暂时隐藏) */
-  "wan2.6": {
-    baseCredits: 25,
-    perSecond: 5,
-    qualityMultiplier: 1.67,
-    enabled: false,
-  },
+  "h3-text-to-video": { baseCredits: 0, perSecond: 4, qualityMultiplier: 1, enabled: true },
+  "h3-reference-to-video": { baseCredits: 0, perSecond: 5, qualityMultiplier: 1, enabled: true },
+  "h3-frames-to-video": { baseCredits: 0, perSecond: 5, qualityMultiplier: 1, enabled: true },
 };
 
 // ============================================

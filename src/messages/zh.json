@@ -1,7 +1,7 @@
 {
   "Metadata": {
     "title": "VideoFly - AI 视频生成平台",
-    "description": "使用 Sora 2、Veo 3.1 等模型在几分钟内创建惊人的 AI 视频"
+    "description": "使用 AutoDL H3 在几分钟内创建惊人的 AI 视频"
   },
   "Common": {
     "login": "登录",
@@ -27,7 +27,7 @@
     "settings": "设置"
   },
   "Hero": {
-    "badge": "支持 Sora 2、Veo 3.1 等模型",
+    "badge": "由 AutoDL H3 驱动",
     "title": "将您的想法转化为精彩视频",
     "subtitle": "使用 AI",
     "description": "在几分钟内创建专业的 AI 生成视频。支持文本转视频、图片转视频，或增强现有素材。",
@@ -207,7 +207,7 @@
     },
     "aiModels": {
       "question": "你们使用哪些 AI 模型？",
-      "answer": "我们会集成业界最顶尖的视频生成模型，包括 Sora 2、Veo 3.1 等。我们会持续更新平台，确保为您提供最新、最强大的模型能力。"
+      "answer": "我们提供 AutoDL H3 文生视频、多参考图生成视频和首尾帧生成视频。"
     },
     "credits": {
       "question": "积分系统是如何工作的？",
@@ -385,7 +385,7 @@
       "features": "使用 VideoFly，您可以：",
       "featuresList": {
         "generate": "在几分钟内生成精彩的 AI 视频",
-        "models": "使用 Sora 2、Veo 3.1 等多种 AI 模型",
+        "models": "使用 AutoDL H3 文生、多参考图和首尾帧视频功能",
         "share": "随时随地下载和分享您的作品"
       },
       "cta": "开始创作视频",
@@ -424,7 +424,7 @@
       "features": "使用 VideoFly，您可以：",
       "featuresList": {
         "generate": "在几分钟内生成精彩的 AI 视频",
-        "models": "使用 Sora 2、Veo 3.1 等多种 AI 模型",
+        "models": "使用 AutoDL H3 文生、多参考图和首尾帧视频功能",
         "share": "随时随地下载和分享您的作品"
       },
       "cta": "开始创作视频",

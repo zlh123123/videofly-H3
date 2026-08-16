@@ -38,12 +38,9 @@ function convertToVideoModel(modelConfig: any): VideoModel {
  */
 function getModelColor(modelId: string): string {
   const colorMap: Record<string, string> = {
-    "sora-2": "#000000",
-    "veo-3.1": "#4285f4",
-    "wan2.6": "#8b5cf6",
-    "seedance-1.5": "#ec4899",
-    "seedance-1.5-pro": "#ec4899",
-    "kling-2": "#f59e0b",
+    "h3-text-to-video": "#111827",
+    "h3-reference-to-video": "#0f766e",
+    "h3-frames-to-video": "#7c3aed",
   };
   return colorMap[modelId] || "#71717a";
 }
@@ -78,7 +75,7 @@ export function adaptToolPageConfigToGeneratorConfig(
       id: generator.mode,
       name: getTitleFromMode(generator.mode),
       icon: getIconFromMode(generator.mode),
-      uploadType: generator.mode === "image-to-video" ? "single" : undefined,
+    uploadType: generator.mode === "reference-to-video" ? "characters" : generator.mode === "frames-to-video" ? "start-end" : undefined,
       supportedModels: generator.models.available,
     },
   ];
@@ -144,6 +141,7 @@ function getTitleFromMode(mode: string): string {
     "text-to-video": "Text to Video",
     "image-to-video": "Image to Video",
     "reference-to-video": "Reference to Video",
+    "frames-to-video": "首尾帧生成视频",
     "image-to-image": "Image to Image",
   };
   return titles[mode] || mode;
@@ -157,6 +155,7 @@ function getIconFromMode(mode: string): "text" | "image" | "reference" | "frames
     "text-to-video": "text",
     "image-to-video": "image",
     "reference-to-video": "reference",
+    "frames-to-video": "frames",
     "image-to-image": "image",
   };
   return icons[mode] || "text";

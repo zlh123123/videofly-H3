@@ -124,7 +124,8 @@ function CompactRenderer() {
     (state.generationType === "video" ? config.videoModes : config.imageModes).length > 0;
 
   // 检查是否显示图片上传
-  const showImageUpload = features.showImageUpload !== false;
+  const showImageUpload = features.showImageUpload !== false &&
+    computed.currentMode?.id !== "text-to-video";
 
   // 检查是否显示提示词输入
   const showPromptInput = features.showPromptInput !== false;

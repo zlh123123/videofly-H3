@@ -9,6 +9,8 @@ export interface VideoGenerateRequest {
   duration: number;
   aspectRatio?: string;
   quality?: string;
+  resolution?: string;
+  mode?: string;
   imageUrl?: string;
   imageUrls?: string[];
   generateAudio?: boolean;
@@ -17,13 +19,13 @@ export interface VideoGenerateRequest {
 /**
  * Parse duration string to number
  * "10s" -> 10, "5s" -> 5, etc.
- * Clamps to valid range 4-30
+ * Clamps to AutoDL H3 valid range 1-10
  */
 export function parseDuration(duration?: string): number {
   if (!duration) return 10;
   const num = Number.parseInt(duration.replace(/\D/g, ""));
-  if (num < 4) return 4;
-  if (num > 30) return 30;
+  if (num < 1) return 1;
+  if (num > 10) return 10;
   return num;
 }
 
@@ -69,8 +71,8 @@ export async function transformSubmitData(
 ): Promise<VideoGenerateRequest> {
   // Upload images if exist (parallel upload for multiple images)
   let imageUrl: string | undefined;
-  let imageUrls: string[] | undefined;
-  if (data.images && data.images.length > 0) {
+  let imageUrls: string[] | undefined = data.imageUrls;
+  if (!imageUrls && data.images && data.images.length > 0) {
     const urls = await Promise.all(data.images.map(uploadImage));
     if (urls.length === 1) {
       imageUrl = urls[0];
@@ -87,7 +89,7 @@ export async function transformSubmitData(
     quality = resolutionToQuality(data.resolution);
   }
 
-  const model = data.model || "sora-2";
+  const model = data.model || "h3-text-to-video";
 
   return {
     prompt: data.prompt,
@@ -95,6 +97,8 @@ export async function transformSubmitData(
     duration: parseDuration(data.duration),
     aspectRatio: data.aspectRatio || undefined,
     quality,
+    resolution: data.resolution,
+    mode: data.mode,
     imageUrl,
     imageUrls,
     generateAudio: data.generateAudio,

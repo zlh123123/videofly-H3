@@ -22,23 +22,23 @@ export const referenceToVideoConfig: ToolPageConfig = {
 
   // 生成器配置
   generator: {
-    mode: "reference-to-video",
+    mode: "frames-to-video",
     uiMode: "compact",
 
     defaults: {
-      model: "seedance-1.5-pro",
+      model: "h3-frames-to-video",
       duration: 5,
       aspectRatio: "16:9",
       outputNumber: 1,
     },
 
     models: {
-      available: ["seedance-1.5-pro"],
-      default: "seedance-1.5-pro",
+      available: ["h3-frames-to-video"],
+      default: "h3-frames-to-video",
     },
 
     features: {
-      showImageUpload: true, // 用于上传参考视频帧
+      showImageUpload: true,
       showPromptInput: true,
       showModeSelector: false,
     },
@@ -92,7 +92,7 @@ export const referenceToVideoConfig: ToolPageConfig = {
     ],
 
     supportedModels: [
-      { name: "Seedance 1.5 Pro", provider: "ByteDance", color: "#10b981" },
+      { name: "H3 首尾帧", provider: "AutoDL", color: "#7c3aed" },
     ],
 
     stats: {

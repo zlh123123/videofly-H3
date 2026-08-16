@@ -1,6 +1,6 @@
 // AI Video Provider Types
 
-export type ProviderType = "evolink" | "kie" | "apimart";
+export type ProviderType = "autodl";
 
 // Unified video generation parameters
 export interface VideoGenerationParams {
@@ -9,6 +9,7 @@ export interface VideoGenerationParams {
   aspectRatio?: string;
   duration?: number;
   quality?: string;
+  resolution?: string;
   imageUrl?: string;
   imageUrls?: string[];
   mode?: string;
