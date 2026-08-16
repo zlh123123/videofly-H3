@@ -48,10 +48,14 @@ export function UserAuthForm({
     setIsLoading(true);
 
     try {
-      await authClient.signIn.magicLink({
+      const result = await authClient.signIn.magicLink({
         email: data.email.toLowerCase(),
         callbackURL: searchParams?.get("from") ?? `/${lang}/my-creations`,
       });
+
+      if (result.error) {
+        throw new Error(result.error.message || "Failed to send login link");
+      }
 
       toast.success("Check your email", {
         description: "We sent you a login link. Be sure to check your spam too.",

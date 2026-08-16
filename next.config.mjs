@@ -12,6 +12,9 @@ if (!process.env.SKIP_ENV_VALIDATION) {
 const config = {
   reactStrictMode: true,
   pageExtensions: ["ts", "tsx"],
+  // Keep the Node.js renderer external so standalone builds retain its stream
+  // dependencies instead of bundling them into an incomplete webpack shim.
+  serverExternalPackages: ["@react-email/render"],
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },

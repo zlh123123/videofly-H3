@@ -67,6 +67,7 @@ export interface RetryVideoResponse {
 
 export type CreditTransType =
   | "order_pay"
+  | "redeem_code"
   | "subscription"
   | "admin_adjust"
   | "video_generate"

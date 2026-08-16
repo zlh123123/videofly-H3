@@ -9,6 +9,7 @@ import { apiSuccess, handleApiError } from "@/lib/api/response";
 const transTypeMapping: Record<CreditTransType, string> = {
   NEW_USER: "new_user",
   ORDER_PAY: "order_pay",
+  REDEEM_CODE: "redeem_code",
   SUBSCRIPTION: "subscription",
   VIDEO_CONSUME: "video_generate",
   REFUND: "video_refund",

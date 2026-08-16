@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useCreditBalance, useCreditHistory } from "@/hooks/use-credits";
-import { BalanceCard, CreditHistory } from "@/components/credits";
+import { BalanceCard, CreditHistory, RedeemCodeForm } from "@/components/credits";
 
 interface CreditsPageProps {
   locale: string;
@@ -53,10 +53,6 @@ export function CreditsPage({ locale }: CreditsPageProps) {
     };
   }, [hasMore, historyLoading, fetchNextPage]);
 
-  const handleBuyCredits = () => {
-    router.push(`/${locale}/pricing`);
-  };
-
   // 处理支付成功回调
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -93,7 +89,12 @@ export function CreditsPage({ locale }: CreditsPageProps) {
       </div>
 
       {/* Balance Card */}
-      <BalanceCard balance={balance ?? null} onBuyCredits={handleBuyCredits} />
+      <BalanceCard balance={balance ?? null} />
+
+      <section className="border-y border-border py-6">
+        <h2 className="mb-4 text-lg font-semibold">充值余额</h2>
+        <RedeemCodeForm />
+      </section>
 
       {/* Credit History */}
       <CreditHistory

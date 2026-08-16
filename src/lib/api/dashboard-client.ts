@@ -104,6 +104,13 @@ class ApiClient {
     return this.request<CreditHistoryResponse>(`/credit/history${query ? `?${query}` : ""}`);
   }
 
+  async redeemCode(code: string): Promise<{ amount: number; packageId: number; message: string }> {
+    return this.request("/credit/redeem", {
+      method: "POST",
+      body: JSON.stringify({ code }),
+    });
+  }
+
   // ============================================
   // Billing
   // ============================================

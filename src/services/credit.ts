@@ -352,13 +352,13 @@ export class CreditService {
     transType?: CreditTransType;
     expiryDays?: number;
     remark?: string;
-  }): Promise<{ packageId: number }> {
+  }, transactionClient?: any): Promise<{ packageId: number }> {
     const transType = params.transType || CreditTransType.ORDER_PAY;
     const expiryDays =
       params.expiryDays ?? CREDITS_CONFIG.expiration.purchaseDays;
     const expiredAt = new Date(Date.now() + expiryDays * 24 * 60 * 60 * 1000);
 
-    return db.transaction(async (trx) => {
+    const run = async (trx: any) => {
       const [pkgResult] = await trx
         .insert(creditPackages)
         .values({
@@ -391,7 +391,9 @@ export class CreditService {
       });
 
       return { packageId: pkgResult.id };
-    });
+    };
+
+    return transactionClient ? run(transactionClient) : db.transaction(run);
   }
 
   /**

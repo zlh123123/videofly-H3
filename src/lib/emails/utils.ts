@@ -41,7 +41,7 @@ export interface EmailTranslations {
  * 获取指定语言的邮件翻译
  */
 export async function getEmailTranslations(
-  locale: string = "en"
+  locale = "en"
 ): Promise<EmailTranslations> {
   const messages = await getMessages({ locale });
 
@@ -125,7 +125,7 @@ export async function sendWelcomeEmail(props: {
   name?: string;
   locale?: string;
 }) {
-  const { resend } = await import("@/lib/email");
+  const { sendEmail } = await import("@/lib/email");
   const { env } = await import("@/lib/auth/env.mjs");
   const siteConfig = await getSiteConfig(props.locale);
 
@@ -133,7 +133,7 @@ export async function sendWelcomeEmail(props: {
   const { WelcomeEmail } = await import("@/lib/emails/welcome-email");
 
   try {
-    await resend.emails.send({
+    await sendEmail({
       from: env.RESEND_FROM,
       to: props.to,
       subject: translations.welcome.subject,
@@ -174,7 +174,7 @@ export async function sendResetPasswordEmail(props: {
   resetUrl: string;
   locale?: string;
 }) {
-  const { resend } = await import("@/lib/email");
+  const { sendEmail } = await import("@/lib/email");
   const { env } = await import("@/lib/auth/env.mjs");
   const siteConfig = await getSiteConfig(props.locale);
 
@@ -182,7 +182,7 @@ export async function sendResetPasswordEmail(props: {
   const { ResetPasswordEmail } = await import("@/lib/emails/reset-password-email");
 
   try {
-    await resend.emails.send({
+    await sendEmail({
       from: env.RESEND_FROM,
       to: props.to,
       subject: translations.resetPassword.subject,

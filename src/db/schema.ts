@@ -30,6 +30,7 @@ export const statusEnum = pgEnum("Status", [
 export const creditTransTypeEnum = pgEnum("CreditTransType", [
   "NEW_USER",
   "ORDER_PAY",
+  "REDEEM_CODE",
   "SUBSCRIPTION",
   "VIDEO_CONSUME",
   "REFUND",
@@ -295,6 +296,26 @@ export const creditTransactions = pgTable(
   })
 );
 
+/** One-time prepaid balance codes. The plaintext code is never stored. */
+export const redeemCodes = pgTable(
+  "redeem_codes",
+  {
+    id: serial("id").primaryKey(),
+    codeHash: text("code_hash").notNull().unique(),
+    faceValue: integer("face_value").notNull(),
+    batchId: text("batch_id").notNull(),
+    status: text("status").default("AVAILABLE").notNull(),
+    redeemedBy: text("redeemed_by"),
+    redeemedAt: timestamp("redeemed_at"),
+    expiresAt: timestamp("expires_at"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => ({
+    statusIdx: index("redeem_codes_status_idx").on(table.status),
+    batchIdx: index("redeem_codes_batch_id_idx").on(table.batchId),
+  })
+);
+
 export const videos = pgTable(
   "videos",
   {
@@ -335,6 +356,7 @@ export type BetterAuthUser = typeof users.$inferSelect;
 export type CreditPackage = typeof creditPackages.$inferSelect;
 export type CreditHold = typeof creditHolds.$inferSelect;
 export type CreditTransaction = typeof creditTransactions.$inferSelect;
+export type RedeemCode = typeof redeemCodes.$inferSelect;
 export type Video = typeof videos.$inferSelect;
 
 export const SubscriptionPlan = {
@@ -348,6 +370,7 @@ export type SubscriptionPlan =
 export const CreditTransType = {
   NEW_USER: "NEW_USER",
   ORDER_PAY: "ORDER_PAY",
+  REDEEM_CODE: "REDEEM_CODE",
   SUBSCRIPTION: "SUBSCRIPTION",
   VIDEO_CONSUME: "VIDEO_CONSUME",
   REFUND: "REFUND",

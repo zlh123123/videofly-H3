@@ -77,7 +77,7 @@ const plugins: AuthPlugin[] = [
       const { MagicLinkEmail } = await import(
         "@/lib/emails/magic-link-email"
       );
-      const { resend } = await import("@/lib/email");
+      const { sendEmail } = await import("@/lib/email");
       const { siteConfig } = await import("@/config/site");
 
       // Check if user exists to determine email type
@@ -89,11 +89,11 @@ const plugins: AuthPlugin[] = [
 
       const userVerified = !!existingUser?.emailVerified;
       const authSubject = userVerified
-        ? `Sign-in link for ${(siteConfig as { name: string }).name}`
-        : "Activate your account";
+        ? `登录 ${(siteConfig as { name: string }).name}`
+        : `激活您的 ${(siteConfig as { name: string }).name} 账户`;
 
       try {
-        await resend.emails.send({
+        await sendEmail({
           from: env.RESEND_FROM,
           to: email,
           subject: authSubject,

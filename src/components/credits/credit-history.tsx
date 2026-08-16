@@ -32,6 +32,11 @@ const typeConfig: Record<string, { icon: any; label: string; color: string }> = 
     label: "Purchase",
     color: "text-emerald-500",
   },
+  REDEEM_CODE: {
+    icon: ShoppingBag,
+    label: "Redeem Code",
+    color: "text-emerald-500",
+  },
   SUBSCRIPTION: {
     icon: ShoppingBag,
     label: "Subscription",
@@ -143,6 +148,7 @@ export function CreditHistory({ transactions, hasMore, onLoadMore }: CreditHisto
       {hasMore && onLoadMore && (
         <div className="text-center pt-4">
           <button
+            type="button"
             onClick={onLoadMore}
             className="px-4 py-2 text-sm font-medium rounded-md border border-border hover:bg-muted transition-colors"
           >
