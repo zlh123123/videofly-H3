@@ -24,14 +24,14 @@ export interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   name: "VideoFly",
-  description: "AI Video Generation Platform powered by AutoDL H3",
+  description: "AI video generation platform for text, references, and keyframes",
   url: process.env.NEXT_PUBLIC_APP_URL || "https://videofly.app",
   ogImage: "/og.png",
   links: {},
   auth: {
-    enableGoogleLogin: true,
+    enableGoogleLogin: false,
     enableMagicLinkLogin: true,
-    defaultProvider: "google",
+    defaultProvider: "email",
   },
   routes: {
     defaultLoginRedirect: "/text-to-video",

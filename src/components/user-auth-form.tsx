@@ -13,57 +13,54 @@ import { buttonVariants } from "@/components/ui/button";
 import * as Icons from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { CustomerServiceDialog } from "@/components/landing/customer-service-dialog";
 import { toast } from "sonner";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   lang: string;
+  mode?: "login" | "register";
   disabled?: boolean;
 }
 
-const userAuthSchema = z.object({
-  email: z.string().email(),
-});
+const userAuthSchema = z
+  .object({
+    email: z.string().email(),
+    password: z.string().min(8),
+    confirmPassword: z.string().optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.confirmPassword !== undefined && data.password !== data.confirmPassword) {
+      ctx.addIssue({ code: "custom", path: ["confirmPassword"], message: "Passwords do not match" });
+    }
+  });
 
 type FormData = z.infer<typeof userAuthSchema>;
 
-export function UserAuthForm({
-  className,
-  lang,
-  disabled,
-  ...props
-}: UserAuthFormProps) {
+export function UserAuthForm({ className, lang, mode = "login", disabled, ...props }: UserAuthFormProps) {
   const t = useTranslations("Login");
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(userAuthSchema),
-  });
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [isGoogleLoading, setIsGoogleLoading] = React.useState<boolean>(false);
+  const isRegister = mode === "register";
+  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({ resolver: zodResolver(userAuthSchema) });
+  const [isLoading, setIsLoading] = React.useState(false);
   const searchParams = useSearchParams();
 
   async function onSubmit(data: FormData) {
     setIsLoading(true);
-
+    const callbackURL = searchParams?.get("from") ?? `/${lang}/my-creations`;
     try {
-      const result = await authClient.signIn.magicLink({
-        email: data.email.toLowerCase(),
-        callbackURL: searchParams?.get("from") ?? `/${lang}/my-creations`,
-      });
-
-      if (result.error) {
-        throw new Error(result.error.message || "Failed to send login link");
-      }
-
-      toast.success("Check your email", {
-        description: "We sent you a login link. Be sure to check your spam too.",
-      });
+      const result = isRegister
+        ? await authClient.signUp.email({ email: data.email.toLowerCase(), password: data.password, name: data.email.split("@")[0], callbackURL })
+        : await authClient.signIn.email({ email: data.email.toLowerCase(), password: data.password, callbackURL });
+      if (result.error) throw new Error(result.error.message || t("error_detail"));
+      toast.success(isRegister ? t("register_success") : t("login_success"));
+      window.location.assign(callbackURL);
     } catch (error) {
-      console.error("Error during sign in:", error);
-      toast.error("Something went wrong.", {
-        description: "Your sign in request failed. Please try again.",
+      console.error(`${mode} request failed:`, error);
+      const detail = error instanceof Error && error.message ? error.message : "";
+      const userDetail = /already exists|already registered|unique/i.test(detail)
+        ? t("email_already_registered")
+        : detail;
+      toast.error(t("error"), {
+        description: userDetail || (isRegister ? t("register_error_detail") : t("error_detail")),
       });
     } finally {
       setIsLoading(false);
@@ -71,75 +68,31 @@ export function UserAuthForm({
   }
 
   return (
-    <div className={cn("grid gap-6", className)} {...props}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <div className={cn("grid gap-5", className)} {...props}>
+      <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
         <div className="grid gap-2">
-          <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="email">
-              Email
-            </Label>
-            <Input
-              id="email"
-              placeholder="name@example.com"
-              type="email"
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect="off"
-              disabled={isLoading || isGoogleLoading || disabled}
-              {...register("email")}
-            />
-            {errors?.email && (
-              <p className="px-1 text-xs text-red-600">
-                {errors.email.message}
-              </p>
-            )}
+          <Label htmlFor={`${mode}-email`}>{t("email_label")}</Label>
+          <Input id={`${mode}-email`} placeholder={t("email_placeholder")} type="email" autoComplete="email" disabled={isLoading || disabled} {...register("email")} />
+          {errors.email && <p className="text-xs text-red-600">{t("invalid_email")}</p>}
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor={`${mode}-password`}>{t("password_label")}</Label>
+          <Input id={`${mode}-password`} placeholder={t("password_placeholder")} type="password" autoComplete={isRegister ? "new-password" : "current-password"} disabled={isLoading || disabled} {...register("password")} />
+          {errors.password && <p className="text-xs text-red-600">{t("password_min_length")}</p>}
+        </div>
+        {isRegister && (
+          <div className="grid gap-2">
+            <Label htmlFor="register-confirm-password">{t("confirm_password_label")}</Label>
+            <Input id="register-confirm-password" placeholder={t("confirm_password_placeholder")} type="password" autoComplete="new-password" disabled={isLoading || disabled} {...register("confirmPassword")} />
+            {errors.confirmPassword && <p className="text-xs text-red-600">{t("password_mismatch")}</p>}
           </div>
-          <button
-            type="submit"
-            className={cn(buttonVariants())}
-            disabled={isLoading}
-          >
-            {isLoading && (
-              <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
-            )}
-            {t("signin_email")}
-          </button>
-        </div>
+        )}
+        <button type="submit" className={cn(buttonVariants(), "mt-2 w-full")} disabled={isLoading || disabled}>
+          {isLoading && <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />}
+          {isRegister ? t("create_account") : t("signin_email")}
+        </button>
       </form>
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">
-            {t("signin_others")}
-          </span>
-        </div>
-      </div>
-      <button
-        type="button"
-        className={cn(buttonVariants({ variant: "outline" }))}
-        onClick={() => {
-          setIsGoogleLoading(true);
-          authClient.signIn
-            .social({
-              provider: "google",
-              callbackURL: searchParams?.get("from") ?? `/${lang}/my-creations`,
-            })
-            .catch((error) => {
-              console.error("Google signIn error:", error);
-              setIsGoogleLoading(false);
-            });
-        }}
-        disabled={isLoading || isGoogleLoading}
-      >
-        {isGoogleLoading ? (
-          <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <Icons.Google className="mr-2 h-4 w-4" />
-        )}{" "}
-        Continue with Google
-      </button>
+      {!isRegister && <div className="flex justify-center"><CustomerServiceDialog compact triggerLabel={t("forgot_password")} /></div>}
     </div>
   );
 }

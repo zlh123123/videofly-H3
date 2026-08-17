@@ -92,7 +92,7 @@ export const referenceToVideoConfig: ToolPageConfig = {
     ],
 
     supportedModels: [
-      { name: "H3 首尾帧", provider: "AutoDL", color: "#7c3aed" },
+      { name: "H3 首尾帧", provider: "VideoFly", color: "#7c3aed" },
     ],
 
     stats: {

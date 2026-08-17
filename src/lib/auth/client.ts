@@ -5,7 +5,12 @@ import { magicLinkClient } from "better-auth/client/plugins";
 import { creemClient } from "@creem_io/better-auth/client";
 
 export const authClient = createAuthClient({
-  baseURL: process.env.NEXT_PUBLIC_APP_URL,
+  // Keep auth requests same-origin so both the domain and direct server-IP
+  // entry points work without browser CORS or mixed-content failures.
+  baseURL:
+    typeof window !== "undefined"
+      ? window.location.origin
+      : process.env.NEXT_PUBLIC_APP_URL,
   plugins: [magicLinkClient(), creemClient()],
 });
 

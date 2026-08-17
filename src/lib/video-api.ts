@@ -19,7 +19,7 @@ export interface VideoGenerateRequest {
 /**
  * Parse duration string to number
  * "10s" -> 10, "5s" -> 5, etc.
- * Clamps to AutoDL H3 valid range 1-10
+ * Clamps duration to the supported 1-10 second range
  */
 export function parseDuration(duration?: string): number {
   if (!duration) return 10;

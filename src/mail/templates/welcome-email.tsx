@@ -67,7 +67,7 @@ WelcomeEmail.PreviewProps = {
         features: "With VideoFly, you can:",
         featuresList: {
           generate: "Generate stunning AI videos in minutes",
-          models: "Use AutoDL H3 text-to-video, multi-reference, and first/last-frame video",
+          models: "Use text-to-video, multi-reference, and first/last-frame video",
           share: "Download and share your creations anywhere",
         },
         cta: "Start Creating Videos",

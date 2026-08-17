@@ -93,7 +93,7 @@ export const imageToVideoConfig: ToolPageConfig = {
     ],
 
     supportedModels: [
-      { name: "H3 多参考图", provider: "AutoDL", color: "#0f766e" },
+      { name: "H3 多参考图", provider: "VideoFly", color: "#0f766e" },
     ],
 
     stats: {

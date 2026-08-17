@@ -38,8 +38,8 @@ export const SignInModalContent = ({ lang }: SignInModalContentProps) => {
     } catch (error) {
       console.error(`${provider} signIn error:`, error);
       setSignInClicked(null);
-      toast.error("Login failed", {
-        description: `Could not sign in with ${provider}. Please try again.`,
+      toast.error(t("error"), {
+        description: t("provider_error", { provider }),
       });
     }
   };
@@ -49,7 +49,7 @@ export const SignInModalContent = ({ lang }: SignInModalContentProps) => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email || !emailRegex.test(email)) {
-      setEmailError("Please enter a valid email address");
+      setEmailError(t("invalid_email"));
       return;
     }
 
@@ -63,19 +63,19 @@ export const SignInModalContent = ({ lang }: SignInModalContentProps) => {
       });
 
       if (result.error) {
-        throw new Error(result.error.message || "Failed to send login link");
+        throw new Error(result.error.message || t("send_failed"));
       }
 
-      toast.success("Check your email", {
-        description: "We sent you a login link. Be sure to check your spam too.",
+      toast.success(t("email_sent"), {
+        description: t("email_sent_detail"),
       });
 
       setEmail("");
       signInModal.onClose();
     } catch (error) {
       console.error("Magic link signIn error:", error);
-      toast.error("Something went wrong", {
-        description: "Your sign in request failed. Please try again.",
+      toast.error(t("error"), {
+        description: t("error_detail"),
       });
     } finally {
       setSignInClicked(null);
@@ -133,12 +133,12 @@ export const SignInModalContent = ({ lang }: SignInModalContentProps) => {
 
             <form onSubmit={handleMagicLinkLogin} className="grid gap-2">
               <div className="grid gap-1">
-                <Label className="sr-only" htmlFor="email">
-                  Email
+                  <Label className="sr-only" htmlFor="email">
+                    {t("email_label")}
                 </Label>
                 <Input
                   id="email"
-                  placeholder="name@example.com"
+                  placeholder={t("email_placeholder")}
                   type="email"
                   autoCapitalize="none"
                   autoComplete="email"

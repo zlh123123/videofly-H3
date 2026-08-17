@@ -121,7 +121,7 @@ export const DEFAULT_IMAGE_ASPECT_RATIOS = ["1:1", "16:9", "3:2", "2:3", "3:4", 
 // ============================================================================
 
 // Different models support different durations - common options listed here
-// AutoDL H3: 1s-10s
+// Supported video duration range: 1s-10s
 export const DEFAULT_DURATIONS = ["4s", "5s", "6s", "8s", "10s", "12s", "15s"];
 export const DEFAULT_RESOLUTIONS: string[] = [];
 

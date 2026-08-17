@@ -86,14 +86,14 @@ export const textToVideoConfig: ToolPageConfig = {
 
     features: [
       "Simply describe what you want to see",
-      "Powered by AutoDL H3 text-to-video",
+      "Create videos from detailed text prompts",
       "Cinematic quality up to 1080p",
       "Generate audio and sound effects automatically",
       "Multiple aspect ratios for any platform",
     ],
 
     supportedModels: [
-      { name: "H3 文生视频", provider: "AutoDL", color: "#111827" },
+      { name: "H3 文生视频", provider: "VideoFly", color: "#111827" },
     ],
 
     stats: {

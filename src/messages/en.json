@@ -1,7 +1,7 @@
 {
   "Metadata": {
     "title": "VideoFly - AI Video Generation Platform",
-    "description": "Create stunning AI-generated videos in minutes with AutoDL H3"
+    "description": "Create stunning AI-generated videos in minutes"
   },
   "Common": {
     "login": "Login",
@@ -27,7 +27,7 @@
     "settings": "Settings"
   },
   "Hero": {
-    "badge": "Powered by AutoDL H3",
+    "badge": "AI video creation workspace",
     "title": "Transform Your Ideas Into Stunning Videos",
     "subtitle": "with AI",
     "description": "Create professional AI-generated videos in minutes. From text to video, image to video, or enhance existing footage.",
@@ -207,7 +207,7 @@
     },
     "aiModels": {
       "question": "Which AI models do you use?",
-      "answer": "We provide AutoDL H3 text-to-video, multi-reference, and first/last-frame video generation."
+      "answer": "We provide text-to-video, multi-reference, and first/last-frame video generation."
     },
     "credits": {
       "question": "How does the credit system work?",
@@ -345,6 +345,28 @@
     "signin_title": "Enter your email to log into your account",
     "singup_title": "Don't have an account? Sign up now.",
     "signin_email": "Log in with Email",
+    "login_success": "Signed in successfully",
+    "register_success": "Account created successfully",
+    "password_label": "Password",
+    "password_placeholder": "Enter your password (8+ characters)",
+    "confirm_password_label": "Confirm password",
+    "confirm_password_placeholder": "Enter your password again",
+    "password_min_length": "Password must be at least 8 characters",
+    "password_mismatch": "Passwords do not match",
+    "forgot_password": "Forgot password? Contact support",
+    "email_already_registered": "This email is already registered. Please sign in instead.",
+    "email_label": "Email",
+    "email_placeholder": "Enter your email address",
+    "invalid_email": "Please enter a valid email address",
+    "continue_google": "Continue with Google",
+    "email_sent": "Check your email",
+    "email_sent_detail": "We sent you a login link. Be sure to check your spam too.",
+    "register_email_sent_detail": "We sent a registration link to your email. Check your inbox to finish creating your account.",
+    "send_failed": "Failed to send login link",
+    "error": "Something went wrong",
+    "error_detail": "Your sign in request failed. Please try again.",
+    "register_error_detail": "Your registration request failed. Please try again.",
+    "provider_error": "Could not sign in with {provider}. Please try again.",
     "signin_others": "Or continue with",
     "signup": "Sign up",
     "privacy": "only your email and profile picture will be stored.",
@@ -385,7 +407,7 @@
       "features": "With VideoFly, you can:",
       "featuresList": {
         "generate": "Generate stunning AI videos in minutes",
-        "models": "Use AutoDL H3 text-to-video, multi-reference, and first/last-frame video",
+        "models": "Use text-to-video, multi-reference, and first/last-frame video",
         "share": "Download and share your creations anywhere"
       },
       "cta": "Start Creating Videos",
@@ -424,7 +446,7 @@
       "features": "With VideoFly, you can:",
       "featuresList": {
         "generate": "Generate stunning AI videos in minutes",
-        "models": "Use AutoDL H3 text-to-video, multi-reference, and first/last-frame video",
+        "models": "Use text-to-video, multi-reference, and first/last-frame video",
         "share": "Download and share your creations anywhere"
       },
       "cta": "Start Creating Videos",

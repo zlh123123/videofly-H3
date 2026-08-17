@@ -1,7 +1,7 @@
 {
   "Metadata": {
     "title": "VideoFly - AI 视频生成平台",
-    "description": "使用 AutoDL H3 在几分钟内创建惊人的 AI 视频"
+    "description": "在几分钟内创建惊人的 AI 视频"
   },
   "Common": {
     "login": "登录",
@@ -27,7 +27,7 @@
     "settings": "设置"
   },
   "Hero": {
-    "badge": "由 AutoDL H3 驱动",
+    "badge": "AI 视频创作工作台",
     "title": "将您的想法转化为精彩视频",
     "subtitle": "使用 AI",
     "description": "在几分钟内创建专业的 AI 生成视频。支持文本转视频、图片转视频，或增强现有素材。",
@@ -199,7 +199,7 @@
     "contact": "还有其他问题？请联系我们",
     "general": {
       "question": "什么是 VideoFly？",
-      "answer": "VideoFly 是一个领先的 AI 视频生成平台，让您能在几分钟内将文本和图片转化为高质量视频。由 Sora 2 和 Veo 3.1 等先进模型驱动，无需昂贵的设备即可让您的创意变为现实。"
+      "answer": "VideoFly 是一个 AI 视频生成平台，让您能在几分钟内将文本和图片转化为高质量视频。无需昂贵的设备即可让您的创意变为现实。"
     },
     "commercial": {
       "question": "我可以将视频用于商业用途吗？",
@@ -207,7 +207,7 @@
     },
     "aiModels": {
       "question": "你们使用哪些 AI 模型？",
-      "answer": "我们提供 AutoDL H3 文生视频、多参考图生成视频和首尾帧生成视频。"
+      "answer": "我们提供文生视频、多参考图生成视频和首尾帧生成视频。"
     },
     "credits": {
       "question": "积分系统是如何工作的？",
@@ -345,6 +345,28 @@
     "signin_title": "输入您的电子邮件以登录您的账户",
     "singup_title": "还没有账户？立即注册。",
     "signin_email": "用电子邮件登录",
+    "login_success": "登录成功",
+    "register_success": "注册成功",
+    "password_label": "密码",
+    "password_placeholder": "请输入密码（至少 8 位）",
+    "confirm_password_label": "确认密码",
+    "confirm_password_placeholder": "请再次输入密码",
+    "password_min_length": "密码至少需要 8 位",
+    "password_mismatch": "两次输入的密码不一致",
+    "forgot_password": "忘记密码？联系客服",
+    "email_already_registered": "该邮箱已经注册，请直接登录。",
+    "email_label": "邮箱",
+    "email_placeholder": "请输入您的邮箱地址",
+    "invalid_email": "请输入有效的邮箱地址",
+    "continue_google": "使用 Google 继续",
+    "email_sent": "邮件已发送",
+    "email_sent_detail": "登录链接已发送到您的邮箱，请注意查收垃圾邮件。",
+    "register_email_sent_detail": "注册链接已发送到您的邮箱，请查收邮件完成账户注册。",
+    "send_failed": "登录链接发送失败",
+    "error": "操作失败",
+    "error_detail": "登录请求失败，请稍后重试。",
+    "register_error_detail": "注册请求失败，请稍后重试。",
+    "provider_error": "无法使用 {provider} 登录，请稍后重试。",
     "signin_others": "或者继续使用",
     "signup": "注册",
     "privacy": "只有您的电子邮件和头像会被存储。",
@@ -385,7 +407,7 @@
       "features": "使用 VideoFly，您可以：",
       "featuresList": {
         "generate": "在几分钟内生成精彩的 AI 视频",
-        "models": "使用 AutoDL H3 文生、多参考图和首尾帧视频功能",
+        "models": "使用文生、多参考图和首尾帧视频功能",
         "share": "随时随地下载和分享您的作品"
       },
       "cta": "开始创作视频",
@@ -424,7 +446,7 @@
       "features": "使用 VideoFly，您可以：",
       "featuresList": {
         "generate": "在几分钟内生成精彩的 AI 视频",
-        "models": "使用 AutoDL H3 文生、多参考图和首尾帧视频功能",
+        "models": "使用文生、多参考图和首尾帧视频功能",
         "share": "随时随地下载和分享您的作品"
       },
       "cta": "开始创作视频",

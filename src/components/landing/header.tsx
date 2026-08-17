@@ -1,21 +1,13 @@
 "use client";
 
 import { useState, useEffect, useTransition } from "react";
-import { Menu, Globe, Sun, Moon, Monitor } from "lucide-react";
+import { Menu, Globe, Sun, Moon, Monitor, BookOpen } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,26 +22,14 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { cn } from "@/components/ui";
 import { useCredits } from "@/stores/credits-store";
-import { headerModels, headerTools, headerDocs } from "@/config/navigation";
-import { Gem, ImagePlay, Type, Video, BookOpen } from "lucide-react";
+import { Gem } from "lucide-react";
 import { LocaleLink } from "@/i18n/navigation";
 import type { User } from "@/lib/auth/client";
 import { useSigninModal } from "@/hooks/use-signin-modal";
 import { authClient } from "@/lib/auth/client";
-
-const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  ImagePlay,
-  Type,
-  Video,
-};
+import { CustomerServiceDialog } from "@/components/landing/customer-service-dialog";
 
 export function LandingHeader({ user }: { user?: User | null }) {
   const signInModal = useSigninModal();
@@ -124,95 +104,15 @@ export function LandingHeader({ user }: { user?: User | null }) {
             VideoFly
           </LocaleLink>
 
-          {/* Center Menu - NavigationMenu for better hover */}
-          <NavigationMenu
-            className="[--radix-navigation-menu-viewport-width:400px]"
-          >
-            <NavigationMenuList>
-              {/* Models Dropdown (Hidden for audit) */}
-              {/* <NavigationMenuItem>
-                <NavigationMenuTrigger>{t('Header.models')}</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid w-[400px] grid-cols-2 gap-2 p-4">
-                    {headerModels.map((model) => (
-                      <li key={model.id}>
-                        <NavigationMenuLink asChild>
-                          <LocaleLink
-                            href={model.href}
-                            className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                          >
-                            <div className="text-sm font-medium">{model.title}</div>
-                            <p className="text-xs text-muted-foreground">
-                              {model.subtitle}
-                            </p>
-                          </LocaleLink>
-                        </NavigationMenuLink>
-                      </li>
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem> */}
-
-              {/* Tools Dropdown */}
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>{t('Header.tools')}</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="w-48 p-2">
-                    {headerTools.map((tool) => {
-                      const Icon = iconMap[tool.icon || ""];
-                      return (
-                        <li key={tool.id}>
-                          <NavigationMenuLink asChild>
-                            <LocaleLink
-                              href={tool.href}
-                              className="flex items-center gap-3 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                            >
-                              {Icon && <Icon className="h-4 w-4" />}
-                              <span className="text-sm">{tool.title}</span>
-                            </LocaleLink>
-                          </NavigationMenuLink>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-
-              {/* Pricing Link */}
-              <NavigationMenuItem>
-                <NavigationMenuLink asChild>
-                  <LocaleLink
-                    href="/pricing"
-                    className={cn(
-                      "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none"
-                    )}
-                  >
-                    {t('Header.pricing')}
-                  </LocaleLink>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-
-              {/* Docs Link (Hidden for audit) */}
-              {/* <NavigationMenuItem>
-                <NavigationMenuLink asChild>
-                  <a
-                    href={headerDocs.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={cn(
-                      "group inline-flex h-10 w-max items-center justify-center gap-2 rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none"
-                    )}
-                  >
-                    <BookOpen className="h-4 w-4" />
-                    {t('Header.docs')}
-                  </a>
-                </NavigationMenuLink>
-              </NavigationMenuItem> */}
-            </NavigationMenuList>
-          </NavigationMenu>
-
           {/* Right Section */}
           <div className="flex items-center gap-4">
+            <Button variant="ghost" size="sm" asChild className="gap-2">
+              <LocaleLink href="/help" target="_blank" rel="noopener noreferrer">
+                <BookOpen className="h-4 w-4" />
+                {locale === "zh" ? "使用帮助" : "Help"}
+              </LocaleLink>
+            </Button>
+            <CustomerServiceDialog compact />
             {/* Language Switcher */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -364,69 +264,13 @@ export function LandingHeader({ user }: { user?: User | null }) {
                 </SheetHeader>
 
                 <div className="mt-8 flex flex-col gap-4">
-                  <Accordion type="single" collapsible className="w-full">
-                    {/* Models (Hidden for audit) */}
-                    {/* <AccordionItem value="models" className="border-b-0">
-                      <AccordionTrigger className="py-0 font-semibold hover:no-underline">
-                        {t('Header.models')}
-                      </AccordionTrigger>
-                      <AccordionContent className="mt-2">
-                        {headerModels.map((model) => (
-                          <LocaleLink
-                            key={model.id}
-                            href={model.href}
-                            className="flex flex-col p-3 rounded-md hover:bg-accent transition-colors"
-                          >
-                            <span className="text-sm font-medium">{model.title}</span>
-                            <span className="text-xs text-muted-foreground">
-                              {model.subtitle}
-                            </span>
-                          </LocaleLink>
-                        ))}
-                      </AccordionContent>
-                    </AccordionItem> */}
-
-                    {/* Tools */}
-                    <AccordionItem value="tools" className="border-b-0">
-                      <AccordionTrigger className="py-0 font-semibold hover:no-underline">
-                        {t('Header.tools')}
-                      </AccordionTrigger>
-                      <AccordionContent className="mt-2">
-                        {headerTools.map((tool) => {
-                          const Icon = iconMap[tool.icon || ""];
-                          return (
-                            <LocaleLink
-                              key={tool.id}
-                              href={tool.href}
-                              className="flex items-center gap-3 p-2 rounded-md hover:bg-accent transition-colors"
-                            >
-                              {Icon && <Icon className="h-4 w-4" />}
-                              <span className="text-sm">{tool.title}</span>
-                            </LocaleLink>
-                          );
-                        })}
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-
-                  {/* Pricing */}
-                  <LocaleLink
-                    href="/pricing"
-                    className="font-semibold p-2 hover:bg-accent rounded-md transition-colors"
-                  >
-                    {t('Header.pricing')}
-                  </LocaleLink>
-
-                  {/* Docs (Hidden for audit) */}
-                  {/* <a
-                    href={headerDocs.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 font-semibold p-2 hover:bg-accent rounded-md transition-colors"
-                  >
-                    <BookOpen className="h-4 w-4" />
-                    {t('Header.docs')}
-                  </a> */}
+                  <Button variant="ghost" size="sm" asChild className="justify-start gap-2">
+                    <LocaleLink href="/help" target="_blank" rel="noopener noreferrer">
+                      <BookOpen className="h-4 w-4" />
+                      {locale === "zh" ? "使用帮助" : "Help"}
+                    </LocaleLink>
+                  </Button>
+                  <CustomerServiceDialog compact />
 
                   {/* Language */}
                   <div className="flex items-center gap-3 p-2">

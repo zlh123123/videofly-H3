@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from "next-intl";
 
 import { cn } from "@/components/ui";
 import { LocaleLink } from "@/i18n/navigation";
+import { CustomerServiceDialog } from "@/components/landing/customer-service-dialog";
 
 export function LandingFooter() {
   const t = useTranslations('Footer');
@@ -12,15 +13,6 @@ export function LandingFooter() {
   const currentYear = new Date().getFullYear();
 
   const footerSections = [
-    {
-      title: t('product'),
-      links: [
-        { title: "Image to Video", href: "/image-to-video" },
-        { title: "Text to Video", href: "/text-to-video" },
-        { title: "Reference to Video", href: "/reference-to-video" },
-        { title: "Pricing", href: "/pricing" },
-      ],
-    },
     // {
     //   title: t('company'),
     //   links: [
@@ -55,8 +47,11 @@ export function LandingFooter() {
               🎬 VideoFly
             </LocaleLink>
             <p className="text-sm text-muted-foreground mb-4">
-              Transform your ideas into stunning videos with AI.
+              {locale === "zh"
+                ? "使用 AI 将您的想法转化为精彩视频。"
+                : "Transform your ideas into stunning videos with AI."}
             </p>
+            <CustomerServiceDialog />
           </div>
 
           {/* Footer Links */}
@@ -87,9 +82,9 @@ export function LandingFooter() {
             {t('copyright', { year: currentYear })}
           </p>
           <p className="text-sm text-muted-foreground flex items-center gap-1">
-            Made with
+            {locale === "zh" ? "由 VideoFly 团队用心打造" : "Made with"}
             <Heart className="h-4 w-4 fill-pink-500 text-pink-500" />
-            by VideoFly Team
+            {locale === "zh" ? "" : "by VideoFly Team"}
           </p>
         </div>
       </div>

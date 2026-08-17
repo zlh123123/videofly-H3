@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Check, Sparkles } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 
@@ -65,19 +65,6 @@ export function CTASection() {
               <div className="grid md:grid-cols-2 gap-8 p-8 md:p-12">
                 {/* 左侧: 内容 */}
                 <div className="space-y-6">
-                  {/* 徽章 */}
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20"
-                  >
-                    <Sparkles className="h-4 w-4 text-primary" />
-                    <span className="text-sm font-medium text-primary">
-                      {t("badge")}
-                    </span>
-                  </motion.div>
-
                   {/* 标题 */}
                   <h2 className="text-3xl md:text-4xl font-bold">
                     {t("title")}

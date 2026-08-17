@@ -265,6 +265,14 @@ if (env.CREEM_API_KEY) {
 export const auth = betterAuth({
   baseURL: env.NEXT_PUBLIC_APP_URL,
   basePath: "/api/auth",
+  trustedOrigins: [
+    env.NEXT_PUBLIC_APP_URL,
+    "https://videofly.haoji.blog",
+    "http://150.158.45.72",
+    "https://150.158.45.72",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+  ],
   secret: env.BETTER_AUTH_SECRET,
   logger: debugLogger,
 
@@ -281,6 +289,12 @@ export const auth = betterAuth({
 
   // Plugins
   plugins,
+
+  emailAndPassword: {
+    enabled: true,
+    minPasswordLength: 8,
+    maxPasswordLength: 128,
+  },
 
   // Hooks - 自动赠送新用户积分（仅在注册时触发）
   hooks: {
@@ -300,15 +314,6 @@ export const auth = betterAuth({
         }
       }
     }),
-  },
-
-  // Google OAuth
-  socialProviders: {
-    google: {
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
-      prompt: "select_account", // Always show account picker
-    },
   },
 
   // Custom user fields

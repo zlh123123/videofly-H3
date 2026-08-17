@@ -867,7 +867,8 @@ export function VideoGeneratorInput({
         {/* Input Area */}
         <div className="p-4 min-h-[140px] flex flex-col">
           <div className="flex gap-3 flex-1">
-            {/* Upload Area */}
+            {/* Upload Area (only modes that accept image references) */}
+            {(generationType !== "video" || Boolean(selectedVideoMode?.uploadType)) && (
             <div className="flex-shrink-0 flex gap-2">
               {isMultiUpload ? (
                 uploadSlots.map((slot) => {
@@ -956,6 +957,7 @@ export function VideoGeneratorInput({
                 </div>
               )}
             </div>
+            )}
 
             {/* Text Input */}
             <div className="flex-1 min-h-[56px] flex flex-col">

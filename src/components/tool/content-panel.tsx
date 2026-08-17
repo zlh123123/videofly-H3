@@ -44,7 +44,7 @@ export function ContentPanel({ lang = "en" }: ContentPanelProps) {
             Transform Your Images into Stunning Videos
           </h2>
           <p className="text-muted-foreground">
-            Powered by AutoDL H3: text-to-video, multi-reference video, and first/last-frame video
+            Text-to-video, multi-reference video, and first/last-frame video in one place
           </p>
         </div>
 
