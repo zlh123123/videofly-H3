@@ -15,7 +15,10 @@
     "edit": "编辑",
     "loading": "加载中...",
     "error": "出错了",
-    "success": "成功"
+    "success": "成功",
+    "light": "浅色",
+    "dark": "深色",
+    "system": "跟随系统"
   },
   "Header": {
     "models": "模型",
@@ -80,6 +83,26 @@
     "generatingHint": "视频生成中，可继续发起新任务。",
     "modelLabel": "模型",
     "download": "下载"
+  },
+  "GeneratorPanel": {
+    "titles": { "imageToVideo": "图片转视频", "textToVideo": "文本转视频", "referenceToVideo": "参考图转视频", "generator": "AI 生成器" },
+    "noModels": "当前 AI 服务配置下暂无可用模型。",
+    "model": "模型",
+    "videoModels": "视频模型",
+    "credits": "积分",
+    "prompt": "提示词",
+    "promptPlaceholder": "描述您想创建的视频，例如：阳光花园里玩耍的猫，自然光线，清新氛围……",
+    "referenceImage": "参考图片",
+    "imageSource": "图片来源",
+    "selectedImage": "已选择的图片",
+    "uploadImage": "上传图片",
+    "imageFormats": "JPG、PNG、WEBP • 最大 10MB",
+    "aspectRatio": "宽高比",
+    "videoLength": "视频时长",
+    "resolution": "分辨率",
+    "totalCredits": "总积分：",
+    "generating": "生成中……",
+    "generate": "生成视频"
   },
   "Showcase": {
     "badge": "亲眼见证",
@@ -318,6 +341,13 @@
   },
   "Sidebar": {
     "title": "导航菜单",
+    "video": "视频",
+    "textToVideo": "文本转视频",
+    "imageToVideo": "图片转视频",
+    "referenceVideo": "参考视频",
+    "myCreations": "我的作品",
+    "credits": "积分",
+    "account": "账户",
     "upgradeTitle": "升级专业版",
     "upgradeSubtitle": "解锁更快生成与更多额度"
   },

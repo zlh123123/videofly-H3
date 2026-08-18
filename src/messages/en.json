@@ -15,7 +15,10 @@
     "edit": "Edit",
     "loading": "Loading...",
     "error": "Something went wrong",
-    "success": "Success"
+    "success": "Success",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
   },
   "Header": {
     "models": "Models",
@@ -80,6 +83,26 @@
     "generatingHint": "This video is being generated. You can start another task meanwhile.",
     "modelLabel": "Model",
     "download": "Download"
+  },
+  "GeneratorPanel": {
+    "titles": { "imageToVideo": "IMAGE TO VIDEO", "textToVideo": "TEXT TO VIDEO", "referenceToVideo": "REFERENCE TO VIDEO", "generator": "AI GENERATOR" },
+    "noModels": "No models are currently available for this tool under the active AI provider configuration.",
+    "model": "MODEL",
+    "videoModels": "Video Models",
+    "credits": "credits",
+    "prompt": "PROMPT",
+    "promptPlaceholder": "Describe the video you want to create, e.g., A cat playing in a sunny garden with natural lighting and fresh atmosphere...",
+    "referenceImage": "REFERENCE IMAGE",
+    "imageSource": "IMAGE SOURCE",
+    "selectedImage": "Selected",
+    "uploadImage": "Upload image",
+    "imageFormats": "JPG, PNG, WEBP • Max 10MB",
+    "aspectRatio": "ASPECT RATIO",
+    "videoLength": "VIDEO LENGTH",
+    "resolution": "RESOLUTION",
+    "totalCredits": "Total Credits:",
+    "generating": "Generating...",
+    "generate": "Generate Video"
   },
   "Showcase": {
     "badge": "See It in Action",
@@ -318,6 +341,13 @@
   },
   "Sidebar": {
     "title": "Navigation",
+    "video": "VIDEO",
+    "textToVideo": "Text to Video",
+    "imageToVideo": "Image to Video",
+    "referenceVideo": "Reference Video",
+    "myCreations": "My Creations",
+    "credits": "Credits",
+    "account": "Account",
     "upgradeTitle": "Upgrade to Pro",
     "upgradeSubtitle": "Unlock faster generation and more credits"
   },

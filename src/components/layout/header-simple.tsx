@@ -122,15 +122,15 @@ export function HeaderSimple({
             <DropdownMenuContent align="end" className="min-w-[120px]">
               <DropdownMenuItem onClick={() => setTheme("light")} className="cursor-pointer">
                 <Sun className="mr-2 h-4 w-4" />
-                Light
+                {tCommon("light")}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setTheme("dark")} className="cursor-pointer">
                 <Moon className="mr-2 h-4 w-4" />
-                Dark
+                {tCommon("dark")}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setTheme("system")} className="cursor-pointer">
                 <Monitor className="mr-2 h-4 w-4" />
-                System
+                {tCommon("system")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -173,7 +173,7 @@ export function HeaderSimple({
                   className="cursor-pointer text-destructive"
                   onSelect={async () => {
                     await authClient.signOut();
-                    router.push(`/${lang}`);
+                    router.push("/", { locale: currentLocale });
                     router.refresh();
                   }}
                 >
