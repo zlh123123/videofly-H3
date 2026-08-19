@@ -26,7 +26,7 @@ const config = {
   },
   /** We already do linting and typechecking as separate tasks in CI */
   typescript: { ignoreBuildErrors: true },
-  output: "standalone",
+  output: process.env.BUILD_STANDALONE === "false" ? undefined : "standalone",
 };
 
 // Compose plugins
