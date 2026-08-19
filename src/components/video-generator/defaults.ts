@@ -43,7 +43,7 @@ import type {
 export const DEFAULT_VIDEO_MODELS: VideoModel[] = [
   { id: "h3-text-to-video", name: "H3 文生视频", color: "#111827", description: "从文字生成视频", maxDuration: "10 sec", creditCost: 20, durations: ["1s", "2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "10s"], aspectRatios: ["16:9", "9:16"], resolutions: ["480p", "768p"] },
   { id: "h3-reference-to-video", name: "H3 多参考图", color: "#0f766e", description: "使用多张参考图生成视频", maxDuration: "10 sec", creditCost: 25, durations: ["1s", "2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "10s"], aspectRatios: ["16:9", "9:16"], resolutions: ["480p", "768p", "1080p"], maxImages: 9, minImages: 1, requiresImage: true },
-  { id: "h3-frames-to-video", name: "H3 首尾帧", color: "#7c3aed", description: "使用首尾帧生成视频", maxDuration: "10 sec", creditCost: 25, durations: ["1s", "2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "10s"], aspectRatios: ["16:9", "9:16"], resolutions: ["480p", "768p"], maxImages: 2, minImages: 2, requiresImage: true },
+  { id: "h3-frames-to-video", name: "H3 首帧参考生成视频", color: "#7c3aed", description: "使用首尾帧参考生成视频", maxDuration: "10 sec", creditCost: 25, durations: ["1s", "2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "10s"], aspectRatios: ["16:9", "9:16"], resolutions: ["480p", "768p"], maxImages: 2, minImages: 2, requiresImage: true },
 ];
 
 // ============================================================================
@@ -66,10 +66,10 @@ export const DEFAULT_VIDEO_MODES: GeneratorMode[] = [
   },
   {
     id: "frames-to-video",
-    name: "H3 首尾帧生成视频",
+    name: "H3 首帧参考生成视频",
     icon: "frames",
     uploadType: "start-end",
-    description: "Generate video from start and end frame images",
+    description: "Generate video from first and last frame reference images",
     supportedModels: ["h3-frames-to-video"],
     aspectRatios: ["16:9", "9:16"],
   },

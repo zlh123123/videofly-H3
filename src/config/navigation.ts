@@ -32,13 +32,13 @@ export const sidebarNavigation: NavGroup[] = [
       },
       {
         id: "img2vid",
-        title: "Image to Video",
+        title: "首帧参考生成",
         href: "/image-to-video",
         icon: "ImagePlay",
       },
       {
         id: "ref2vid",
-        title: "Reference Video",
+        title: "多参考图生成",
         href: "/reference-to-video",
         icon: "Video",
       },
@@ -87,8 +87,8 @@ export const sidebarNavigation: NavGroup[] = [
 // 落地页顶部导航 - Models 下拉菜单
 export const headerModels = [
   { id: "h3-text", title: "H3 文生视频", subtitle: "Text to video", href: "/text-to-video" },
-  { id: "h3-reference", title: "H3 多参考图", subtitle: "Reference video", href: "/image-to-video" },
-  { id: "h3-frames", title: "H3 首尾帧", subtitle: "First and last frame", href: "/reference-to-video" },
+  { id: "h3-frames", title: "H3 首帧参考生成", subtitle: "First-frame reference video", href: "/image-to-video" },
+  { id: "h3-reference", title: "H3 多参考图生成", subtitle: "Multi-reference video", href: "/reference-to-video" },
 ];
 
 // 落地页顶部导航 - Tools 下拉菜单

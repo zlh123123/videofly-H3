@@ -26,6 +26,7 @@ build
 .DS_Store
 *.pem
 *.tgz
+videofly-next-build-*.tar.gz
 
 # debug
 npm-debug.log*

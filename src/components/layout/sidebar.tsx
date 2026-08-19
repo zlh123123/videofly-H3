@@ -4,10 +4,9 @@
 // 左侧导航组件
 // ============================================
 
-import { useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ImagePlay, Type, Video, FolderOpen, Gem, User, Sparkles } from "lucide-react";
+import { ImagePlay, Type, Video, FolderOpen, Gem, User } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/components/ui";
 import { sidebarNavigation } from "@/config/navigation";
@@ -18,8 +17,6 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { useUpgradeModal } from "@/hooks/use-upgrade-modal";
-import { ShineBorder } from "@/registry/magicui/shine-border";
 
 const iconMap = {
   ImagePlay,
@@ -48,22 +45,6 @@ export function Sidebar({ lang = "en", mobileOpen, onMobileClose }: SidebarProps
     credits: t("credits"),
     settings: t("account"),
   };
-  const { openModal } = useUpgradeModal();
-
-  // 判断是否为免费用户（可根据实际业务调整）
-  const isFreeUser = useMemo(() => true, []);
-
-  // 处理升级按钮点击
-  const handleUpgradeClick = () => {
-    console.log("Upgrade button clicked");
-    try {
-      openModal({ reason: "upgrade" });
-      console.log("Modal opened");
-    } catch (error) {
-      console.error("Failed to open modal:", error);
-    }
-  };
-
   // 渲染导航项
   const renderNavItem = (item: any, isActive: boolean) => {
     const Icon = iconMap[item.icon as keyof typeof iconMap];
@@ -106,35 +87,6 @@ export function Sidebar({ lang = "en", mobileOpen, onMobileClose }: SidebarProps
           </div>
         ))}
       </nav>
-
-      {/* 底部升级区域 */}
-      {isFreeUser && (
-        <div className="px-3 pt-4 border-t border-border/50">
-          <button
-            onClick={handleUpgradeClick}
-            className="group relative w-full text-left overflow-hidden rounded-xl bg-background p-[1px] hover:translate-y-[-2px] transition-transform"
-            type="button"
-          >
-            <ShineBorder
-              shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
-              borderWidth={1}
-            />
-            <div className="relative bg-gradient-to-br from-primary/15 via-background to-primary/5 p-3 rounded-xl">
-              <div className="relative flex items-center gap-2 mb-1">
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/15 text-primary">
-                  <Sparkles className="h-4 w-4" />
-                </span>
-                <span className="text-sm font-semibold text-foreground">
-                  {t("upgradeTitle")}
-                </span>
-              </div>
-              <p className="relative text-xs text-muted-foreground">
-                {t("upgradeSubtitle")}
-              </p>
-            </div>
-          </button>
-        </div>
-      )}
     </div>
   );
 
@@ -177,37 +129,6 @@ export function Sidebar({ lang = "en", mobileOpen, onMobileClose }: SidebarProps
           </div>
         ))}
       </nav>
-
-      {/* 移动端升级区域 */}
-      {isFreeUser && (
-        <div className="px-3 pt-4 border-t border-border/50">
-          <SheetClose asChild>
-            <button
-              onClick={handleUpgradeClick}
-              className="group relative w-full text-left overflow-hidden rounded-xl bg-background p-[1px] hover:translate-y-[-2px] transition-transform"
-              type="button"
-            >
-              <ShineBorder
-                shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
-                borderWidth={1}
-              />
-              <div className="relative bg-gradient-to-br from-primary/15 via-background to-primary/5 p-3 rounded-xl">
-                <div className="relative flex items-center gap-2 mb-1">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/15 text-primary">
-                    <Sparkles className="h-4 w-4" />
-                  </span>
-                  <span className="text-sm font-semibold text-foreground">
-                    {t("upgradeTitle")}
-                  </span>
-                </div>
-                <p className="relative text-xs text-muted-foreground">
-                  {t("upgradeSubtitle")}
-                </p>
-              </div>
-            </button>
-          </SheetClose>
-        </div>
-      )}
     </div>
   );
 

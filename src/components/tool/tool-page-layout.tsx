@@ -21,7 +21,6 @@ import { useVideoPolling } from "@/hooks/use-video-polling";
 import { useNotificationDeduplication } from "@/hooks/use-notification-deduplication";
 import { videoTaskStorage } from "@/lib/video-task-storage";
 import { videoHistoryStorage, type VideoHistoryItem } from "@/lib/video-history-storage";
-import { useUpgradeModal } from "@/hooks/use-upgrade-modal";
 import { UpgradeModal } from "@/components/upgrade/upgrade-modal";
 import { siteConfig } from "@/config/site";
 import type { Video } from "@/db";
@@ -86,7 +85,6 @@ export function ToolPageLayout({
   const router = useRouter();
   const searchParams = useSearchParams();
   const { balance, optimisticFreeze, optimisticRelease, invalidate } = useCredits();
-  const { openModal } = useUpgradeModal();
   const { shouldNotify, markNotified, resetNotification } = useNotificationDeduplication();
   const videoIdFromQuery = searchParams.get("id");
   const NOTIFICATION_ASKED_KEY = "videofly_notification_asked";
@@ -399,11 +397,7 @@ export function ToolPageLayout({
     const availableCredits = balance?.availableCredits ?? 0;
 
     if (availableCredits < requiredCredits) {
-      // 打开升级弹窗
-      openModal({
-        reason: "insufficient_credits",
-        requiredCredits,
-      });
+      toast.error(tTool("buyCredits"));
       return;
     }
 
@@ -439,10 +433,10 @@ export function ToolPageLayout({
 
     try {
       const selectedMode = config.generator.mode || toolRoute;
-      const imageUrl = data.imageFile
-        ? await uploadImage(data.imageFile)
-        : data.imageUrl;
-      const imageUrls = imageUrl ? [imageUrl] : undefined;
+      const uploadedUrls = data.imageFiles?.length
+        ? await Promise.all(data.imageFiles.map(uploadImage))
+        : [];
+      const imageUrls = [...(data.imageUrls || []), ...uploadedUrls];
       const response = await fetch("/api/v1/video/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -455,8 +449,8 @@ export function ToolPageLayout({
           quality: data.quality,
           outputNumber: data.outputNumber ?? 1,
           generateAudio: data.generateAudio,
-          imageUrls,
-          imageUrl,
+          imageUrls: imageUrls.length ? imageUrls : undefined,
+          imageUrl: imageUrls[0],
         }),
       });
 
@@ -621,7 +615,7 @@ export function ToolPageLayout({
                 {/* Generator Panel Side */}
                 <div className={`${activeTab === "generator" ? "block" : "hidden"} lg:block w-full lg:w-[380px] shrink-0`}>
                   <GeneratorPanel
-                    toolType={toolRoute as "image-to-video" | "text-to-video" | "reference-to-video"}
+                    toolType={config.generator.mode as "image-to-video" | "text-to-video" | "reference-to-video" | "frames-to-video"}
                     isLoading={isSubmitting}
                     onSubmit={handleSubmit}
                     availableModelIds={config.generator.models.available}
@@ -704,7 +698,7 @@ export function ToolPageLayout({
           >
             <div className="h-full min-h-0 rounded-2xl bg-card/70 p-3">
               <GeneratorPanel
-                toolType={toolRoute as "image-to-video" | "text-to-video" | "reference-to-video"}
+                toolType={config.generator.mode as "image-to-video" | "text-to-video" | "reference-to-video" | "frames-to-video"}
                 isLoading={isSubmitting}
                 onSubmit={handleSubmit}
                 availableModelIds={config.generator.models.available}

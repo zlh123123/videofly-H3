@@ -82,6 +82,7 @@
     "generatingTag": "Generating",
     "generatingHint": "This video is being generated. You can start another task meanwhile.",
     "modelLabel": "Model",
+    "buyCredits": "Please purchase credits",
     "download": "Download"
   },
   "GeneratorPanel": {

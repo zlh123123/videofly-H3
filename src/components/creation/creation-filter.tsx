@@ -23,7 +23,7 @@ const availableModels = [
   { value: "all", label: "All Models" },
   { value: "h3-text-to-video", label: "H3 文生视频" },
   { value: "h3-reference-to-video", label: "H3 多参考图" },
-  { value: "h3-frames-to-video", label: "H3 首尾帧" },
+  { value: "h3-frames-to-video", label: "H3 首帧参考生成" },
 ];
 
 const statusOptions = [

@@ -1,4 +1,6 @@
 import { s3mini } from "s3mini";
+import { mkdir, writeFile } from "node:fs/promises";
+import path from "node:path";
 
 export interface StorageConfig {
   endpoint: string;
@@ -85,11 +87,76 @@ export class Storage {
   }
 }
 
-// 单例工厂
-let storageInstance: Storage | null = null;
+class LocalStorage {
+  constructor(
+    private readonly directory: string,
+    private readonly publicDomain: string
+  ) {}
 
-export function getStorage(): Storage {
+  async uploadFile(params: {
+    key: string;
+    body: Buffer;
+    contentType?: string;
+  }): Promise<{ url: string; key: string }> {
+    const destination = path.resolve(this.directory, params.key);
+    const baseDirectory = `${path.resolve(this.directory)}${path.sep}`;
+
+    if (!destination.startsWith(baseDirectory)) {
+      throw new Error("Invalid local storage key");
+    }
+
+    await mkdir(path.dirname(destination), { recursive: true });
+    await writeFile(destination, params.body);
+
+    return { url: this.getPublicUrl(params.key), key: params.key };
+  }
+
+  async downloadAndUpload(params: {
+    sourceUrl: string;
+    key: string;
+    contentType?: string;
+  }): Promise<{ url: string; key: string }> {
+    const response = await fetch(params.sourceUrl);
+    if (!response.ok) {
+      throw new Error(`Failed to download: ${response.statusText}`);
+    }
+
+    return this.uploadFile({
+      key: params.key,
+      body: Buffer.from(await response.arrayBuffer()),
+      contentType: params.contentType || response.headers.get("content-type") || undefined,
+    });
+  }
+
+  private getPublicUrl(key: string): string {
+    return `${this.publicDomain.replace(/\/$/, "")}/${key}`;
+  }
+}
+
+interface StorageClient {
+  uploadFile: Storage["uploadFile"];
+  downloadAndUpload: Storage["downloadAndUpload"];
+}
+
+// 单例工厂
+let storageInstance: StorageClient | null = null;
+
+export function getStorage(): StorageClient {
   if (!storageInstance) {
+    if (process.env.STORAGE_DRIVER === "local") {
+      const directory = process.env.STORAGE_LOCAL_DIR;
+      const publicDomain = process.env.STORAGE_DOMAIN;
+
+      if (!directory || !publicDomain) {
+        throw new Error(
+          "Local storage configuration missing. Required: STORAGE_LOCAL_DIR, STORAGE_DOMAIN"
+        );
+      }
+
+      storageInstance = new LocalStorage(directory, publicDomain);
+      return storageInstance;
+    }
+
     const endpoint = process.env.STORAGE_ENDPOINT;
     const accessKeyId = process.env.STORAGE_ACCESS_KEY;
     const secretAccessKey = process.env.STORAGE_SECRET_KEY;

@@ -141,7 +141,7 @@ function getTitleFromMode(mode: string): string {
     "text-to-video": "Text to Video",
     "image-to-video": "Image to Video",
     "reference-to-video": "Reference to Video",
-    "frames-to-video": "首尾帧生成视频",
+    "frames-to-video": "首帧参考生成视频",
     "image-to-image": "Image to Image",
   };
   return titles[mode] || mode;

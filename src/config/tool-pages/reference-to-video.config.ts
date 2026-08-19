@@ -22,19 +22,19 @@ export const referenceToVideoConfig: ToolPageConfig = {
 
   // 生成器配置
   generator: {
-    mode: "frames-to-video",
+    mode: "reference-to-video",
     uiMode: "compact",
 
     defaults: {
-      model: "h3-frames-to-video",
+      model: "h3-reference-to-video",
       duration: 5,
       aspectRatio: "16:9",
       outputNumber: 1,
     },
 
     models: {
-      available: ["h3-frames-to-video"],
-      default: "h3-frames-to-video",
+      available: ["h3-reference-to-video"],
+      default: "h3-reference-to-video",
     },
 
     features: {
@@ -92,7 +92,7 @@ export const referenceToVideoConfig: ToolPageConfig = {
     ],
 
     supportedModels: [
-      { name: "H3 首尾帧", provider: "VideoFly", color: "#7c3aed" },
+      { name: "H3 多参考图生成", provider: "VideoFly", color: "#0f766e" },
     ],
 
     stats: {

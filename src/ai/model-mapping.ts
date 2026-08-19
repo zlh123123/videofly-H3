@@ -22,7 +22,7 @@ export const MODEL_MAPPINGS: Record<string, ModelMapping> = {
   },
   "h3-frames-to-video": {
     internalId: "h3-frames-to-video",
-    displayName: "H3 首尾帧生成视频",
+    displayName: "H3 首帧参考生成视频",
     providers: { autodl: { providerModelId: "minimax_h3_lightx2v", supported: true } },
   },
 };

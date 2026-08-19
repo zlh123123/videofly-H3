@@ -16,15 +16,7 @@ import { useTranslations } from "next-intl";
 import { cn } from "@/components/ui";
 import { DEFAULT_VIDEO_MODELS } from "@/components/video-generator";
 import { getAvailableModels, calculateModelCredits } from "@/config/credits";
-import { ChevronDown, X, Sparkles, Image as ImageIcon, Clock, Check } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-  DropdownMenuLabel,
-} from "@/components/ui/dropdown-menu";
+import { X, Sparkles, Image as ImageIcon } from "lucide-react";
 
 // ============================================================================
 // Types
@@ -46,7 +38,7 @@ function SectionLabel({ children, required, className }: SectionLabelProps) {
 }
 
 interface GeneratorPanelProps {
-  toolType: "image-to-video" | "text-to-video" | "reference-to-video";
+  toolType: "image-to-video" | "text-to-video" | "reference-to-video" | "frames-to-video";
   isLoading?: boolean;
   onSubmit?: (data: GeneratorData) => void;
   availableModelIds?: string[];
@@ -68,8 +60,8 @@ export interface GeneratorData {
   quality?: string;
   outputNumber?: number;
   generateAudio?: boolean;
-  imageFile?: File;
-  imageUrl?: string;
+  imageFiles?: File[];
+  imageUrls?: string[];
   estimatedCredits: number;
 }
 
@@ -93,9 +85,8 @@ export function GeneratorPanel({
   const [duration, setDuration] = useState(initialDuration || 10);
   const [aspectRatio, setAspectRatio] = useState(initialAspectRatio || "16:9");
   const [quality, setQuality] = useState(initialQuality || "standard");
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imageUrl, setImageUrl] = useState<string | null>(initialImageUrl || null);
-  const [isModelDropdownOpen, setIsModelDropdownOpen] = useState(false);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imageUrls, setImageUrls] = useState<string[]>(initialImageUrl ? [initialImageUrl] : []);
 
   // Filter models based on tool type
   const availableModels = useMemo(() => {
@@ -103,7 +94,7 @@ export function GeneratorPanel({
     let filtered = allowList
       ? models.filter((m) => availableModelIds!.includes(m.id))
       : models;
-    if (toolType === "image-to-video" || toolType === "reference-to-video") {
+    if (toolType !== "text-to-video") {
       filtered = filtered.filter((m) => m.supportImageToVideo);
     }
     return filtered;
@@ -189,10 +180,10 @@ export function GeneratorPanel({
     if (initialPrompt && !prompt) {
       setPrompt(initialPrompt);
     }
-    if (initialImageUrl && !imageFile && !imageUrl) {
-      setImageUrl(initialImageUrl);
+    if (initialImageUrl && imageFiles.length === 0 && imageUrls.length === 0) {
+      setImageUrls([initialImageUrl]);
     }
-  }, [initialPrompt, initialImageUrl, prompt, imageFile, imageUrl]);
+  }, [initialPrompt, initialImageUrl, prompt, imageFiles.length, imageUrls.length]);
 
   useEffect(() => {
     if (!currentModel) return;
@@ -219,9 +210,10 @@ export function GeneratorPanel({
     if (!currentModel) return;
     const hasPrompt = prompt.trim().length > 0;
     const requiresImage = toolType !== "text-to-video";
-    const hasImage = Boolean(imageFile || imageUrl);
+    const imageCount = imageFiles.length + imageUrls.length;
+    const hasRequiredImages = toolType === "frames-to-video" ? imageCount === 2 : imageCount > 0;
     if (!hasPrompt || isLoading) return;
-    if (requiresImage && !hasImage) return;
+    if (requiresImage && !hasRequiredImages) return;
 
     const data: GeneratorData = {
       toolType,
@@ -231,8 +223,8 @@ export function GeneratorPanel({
       aspectRatio,
       quality: currentModel?.qualities?.includes(quality) ? quality : undefined,
       outputNumber: 1,
-      imageFile: imageFile || undefined,
-      imageUrl: imageUrl || undefined,
+      imageFiles: imageFiles.length ? imageFiles : undefined,
+      imageUrls: imageUrls.length ? imageUrls : undefined,
       estimatedCredits,
     };
 
@@ -243,8 +235,8 @@ export function GeneratorPanel({
     duration,
     aspectRatio,
     quality,
-    imageFile,
-    imageUrl,
+    imageFiles,
+    imageUrls,
     estimatedCredits,
     isLoading,
     toolType,
@@ -253,22 +245,31 @@ export function GeneratorPanel({
   ]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImageFile(file);
-      setImageUrl(null);
-    }
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+
+    const maxImages = toolType === "reference-to-video" ? 9 : 2;
+    setImageFiles((current) => [...current, ...files].slice(0, maxImages));
+    e.target.value = "";
   };
 
-  const handleRemoveImage = () => {
-    setImageFile(null);
-    setImageUrl(null);
+  const handleRemoveImage = (index: number) => {
+    if (index < imageFiles.length) {
+      setImageFiles((current) => current.filter((_, fileIndex) => fileIndex !== index));
+      return;
+    }
+    const urlIndex = index - imageFiles.length;
+    setImageUrls((current) => current.filter((_, currentIndex) => currentIndex !== urlIndex));
   };
+
+  const imageCount = imageFiles.length + imageUrls.length;
+  const requiredImageCount = toolType === "frames-to-video" ? 2 : 1;
+  const maxImages = toolType === "reference-to-video" ? 9 : 2;
 
   const canSubmit = hasAvailableModels &&
     Boolean(currentModel) &&
     prompt.trim().length > 0 &&
-    (!((toolType !== "text-to-video") && !imageFile && !imageUrl)) &&
+    (toolType === "text-to-video" || imageCount >= requiredImageCount) &&
     !isLoading;
 
 
@@ -276,6 +277,7 @@ export function GeneratorPanel({
   const getPageTitle = () => {
     if (toolType === "image-to-video") return t("titles.imageToVideo");
     if (toolType === "text-to-video") return t("titles.textToVideo");
+    if (toolType === "frames-to-video") return t("titles.imageToVideo");
     if (toolType === "reference-to-video") return t("titles.referenceToVideo");
     return t("titles.generator");
   };
@@ -307,57 +309,10 @@ export function GeneratorPanel({
               {t("model")}
             </span>
             {currentModel && (
-                <DropdownMenu open={isModelDropdownOpen} onOpenChange={setIsModelDropdownOpen}>
-                <DropdownMenuTrigger asChild disabled={isLoading}>
-                  <button
-                    type="button"
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-800 hover:bg-zinc-700 transition-colors text-sm text-white"
-                  >
-                    {renderModelIcon(currentModel.id, currentModel.name, "sm")}
-                    <span>{currentModel.name}</span>
-                    <ChevronDown className="w-3.5 h-3.5 text-zinc-400" />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="bg-zinc-900 border-zinc-800 w-80 max-h-[400px] overflow-y-scroll custom-scrollbar">
-                  <DropdownMenuLabel className="text-zinc-400 text-xs">
-                    {t("videoModels")}
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator className="bg-zinc-800" />
-                  {availableModels.map((model) => (
-                    <DropdownMenuItem
-                      key={model.id}
-                      data-model-id={model.id}
-                      onClick={() => setSelectedModel(model.id)}
-                      className="text-white hover:bg-zinc-800 flex flex-col items-start py-3"
-                    >
-                      <div className="flex items-center justify-between w-full">
-                        <div className="flex items-center gap-2">
-                          {renderModelIcon(model.id, model.name, "md")}
-                          <span className="font-medium">{model.name}</span>
-                        </div>
-                        {selectedModel === model.id && (
-                          <Check className="w-4 h-4 text-green-500" />
-                        )}
-                      </div>
-                      {model.description && (
-                        <div className="text-xs text-zinc-500 mt-1 ml-8">{model.description}</div>
-                      )}
-                      <div className="text-xs text-zinc-400 mt-1 ml-8 flex items-center gap-2">
-                        {model.maxDuration && (
-                          <>
-                            <span className="flex items-center gap-1">
-                              <Clock className="w-3 h-3" />
-                              {model.maxDuration}
-                            </span>
-                            <span>•</span>
-                          </>
-                        )}
-                        <span>{model.creditCost?.base ?? ""} {t("credits")}</span>
-                      </div>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-800 text-sm text-white">
+                {renderModelIcon(currentModel.id, currentModel.name, "sm")}
+                <span>{currentModel.name}</span>
+              </div>
             )}
           </div>
 
@@ -377,37 +332,36 @@ export function GeneratorPanel({
             />
           </div>
 
-          {/* Image Upload (for image-to-video) */}
-          {(toolType === "image-to-video" || toolType === "reference-to-video") &&
+          {/* Reference image upload */}
+          {toolType !== "text-to-video" &&
             currentModel?.supportImageToVideo && (
               <div>
-                <SectionLabel required={toolType === "image-to-video"}>
-                  {toolType === "reference-to-video" ? t("referenceImage") : t("imageSource")}
+                <SectionLabel required>
+                  {toolType === "frames-to-video" ? t("referenceImage") : t("imageSource")}
                 </SectionLabel>
-                {imageFile || imageUrl ? (
-                  <div className="relative group h-32 rounded-lg overflow-hidden border-2 border-zinc-700">
-                    {imageUrl ? (
-                      <img
-                        src={imageUrl}
-                        alt={t("selectedImage")}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
+                <div className="grid grid-cols-2 gap-3">
+                  {imageFiles.map((file, index) => (
+                    <div key={`${file.name}-${index}`} className="relative group h-28 rounded-lg overflow-hidden border-2 border-zinc-700">
                       <div className="absolute inset-0 flex items-center justify-center p-3">
-                        <span className="text-xs font-medium truncate bg-background/80 backdrop-blur-sm px-3 py-1.5 rounded-full border border-border">
-                          {imageFile?.name}
-                        </span>
+                        <span className="text-xs font-medium truncate bg-background/80 backdrop-blur-sm px-3 py-1.5 rounded-full border border-border">{file.name}</span>
                       </div>
-                    )}
-                    <button
-                      type="button"
-                      onClick={handleRemoveImage}
-                      className="absolute top-2 right-2 p-1.5 rounded-full bg-muted/80 hover:bg-muted opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <X className="w-3.5 h-3.5 text-foreground" />
-                    </button>
-                  </div>
-                ) : (
+                      <button type="button" onClick={() => handleRemoveImage(index)} className="absolute top-2 right-2 p-1.5 rounded-full bg-muted/80 hover:bg-muted opacity-0 group-hover:opacity-100 transition-opacity">
+                        <X className="w-3.5 h-3.5 text-foreground" />
+                      </button>
+                    </div>
+                  ))}
+                  {imageUrls.map((url, urlIndex) => {
+                    const index = imageFiles.length + urlIndex;
+                    return (
+                      <div key={url} className="relative group h-28 rounded-lg overflow-hidden border-2 border-zinc-700">
+                        <img src={url} alt={t("selectedImage")} className="w-full h-full object-cover" />
+                        <button type="button" onClick={() => handleRemoveImage(index)} className="absolute top-2 right-2 p-1.5 rounded-full bg-muted/80 hover:bg-muted opacity-0 group-hover:opacity-100 transition-opacity">
+                          <X className="w-3.5 h-3.5 text-foreground" />
+                        </button>
+                      </div>
+                    );
+                  })}
+                  {imageCount < maxImages && (
                   <label className="flex flex-col items-center justify-center w-full h-32 rounded-lg border-2 border-dashed border-border hover:border-primary/50 cursor-pointer transition-colors group">
                     <div className="w-12 h-12 rounded-full flex items-center justify-center bg-muted/60 group-hover:bg-muted transition-colors">
                       <ImageIcon className="w-6 h-6 text-muted-foreground group-hover:text-primary" />
@@ -417,12 +371,14 @@ export function GeneratorPanel({
                     <input
                       type="file"
                       accept="image/*"
+                      multiple={maxImages > 1}
                       onChange={handleImageChange}
                       className="hidden"
                       disabled={isLoading}
                     />
                   </label>
-                )}
+                  )}
+                </div>
               </div>
             )}
 

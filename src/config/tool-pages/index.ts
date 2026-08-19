@@ -63,7 +63,7 @@ export function getToolPageConfigForProvider(
   const providerModels = new Set(
     getAvailableModels({
       provider,
-      mode: route,
+      mode: config.generator.mode,
     }).map((model) => model.id)
   );
   const available = config.generator.models.available.filter((modelId) =>

@@ -82,10 +82,11 @@
     "generatingTag": "生成中",
     "generatingHint": "视频生成中，可继续发起新任务。",
     "modelLabel": "模型",
+    "buyCredits": "请购买积分",
     "download": "下载"
   },
   "GeneratorPanel": {
-    "titles": { "imageToVideo": "图片转视频", "textToVideo": "文本转视频", "referenceToVideo": "参考图转视频", "generator": "AI 生成器" },
+    "titles": { "imageToVideo": "首帧参考生成", "textToVideo": "文本转视频", "referenceToVideo": "多参考图生成", "generator": "AI 生成器" },
     "noModels": "当前 AI 服务配置下暂无可用模型。",
     "model": "模型",
     "videoModels": "视频模型",
@@ -343,8 +344,8 @@
     "title": "导航菜单",
     "video": "视频",
     "textToVideo": "文本转视频",
-    "imageToVideo": "图片转视频",
-    "referenceVideo": "参考视频",
+    "imageToVideo": "首帧参考生成",
+    "referenceVideo": "多参考图生成",
     "myCreations": "我的作品",
     "credits": "积分",
     "account": "账户",

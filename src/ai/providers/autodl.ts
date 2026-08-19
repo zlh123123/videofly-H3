@@ -55,7 +55,8 @@ export class AutoDLProvider implements AIVideoProvider {
 
   async getTaskStatus(taskId: string): Promise<VideoTaskResponse> {
     const response = await fetch(`${BASE_URL}/result/${taskId}`, {
-      method: "POST",
+      // AutoDL exposes task results as a read-only GET endpoint.
+      method: "GET",
       headers: { Authorization: this.apiKey },
     });
     const data = await this.readResponse(response);
@@ -95,10 +96,11 @@ export class AutoDLProvider implements AIVideoProvider {
     };
   }
 
-  private toRequestBody(params: VideoGenerationParams): Record<string, string> {
-    const body: Record<string, string> = {
+  private toRequestBody(params: VideoGenerationParams): Record<string, string | number> {
+    const body: Record<string, string | number> = {
       prompt: params.prompt,
-      duration: String(params.duration || 5),
+      // AutoDL validates duration as a JSON number, not a numeric string.
+      duration: params.duration || 5,
       resolution: this.resolveResolution(params),
     };
     const images = params.imageUrls?.length

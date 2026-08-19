@@ -167,8 +167,8 @@ export const CREDITS_CONFIG = {
             qualities: ["480p", "768p", "1080p"],
           },
           "h3-frames-to-video": {
-            id: "h3-frames-to-video", name: "H3 首尾帧生成视频", provider: "autodl" as const,
-            description: "H3 使用首尾帧生成视频", supportImageToVideo: true, maxDuration: 10,
+            id: "h3-frames-to-video", name: "H3 首帧参考生成视频", provider: "autodl" as const,
+            description: "H3 使用首帧参考生成视频", supportImageToVideo: true, maxDuration: 10,
             durations: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], aspectRatios: ["16:9", "9:16"],
             qualities: ["480p", "768p"],
           },

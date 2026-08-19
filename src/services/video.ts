@@ -113,6 +113,18 @@ export class VideoService {
       );
     }
 
+    const inputImageCount = params.imageUrls?.length || (params.imageUrl ? 1 : 0);
+    if (resolvedMode === "reference-to-video" && inputImageCount > 9) {
+      throw new ApiError("Multi-reference video supports at most 9 images", 400, {
+        code: "TOO_MANY_REFERENCE_IMAGES",
+      });
+    }
+    if (resolvedMode === "frames-to-video" && inputImageCount !== 2) {
+      throw new ApiError("First-and-last-frame reference video requires exactly 2 images", 400, {
+        code: "INVALID_FRAME_COUNT",
+      });
+    }
+
     if (hasImageInput && !modelConfig.supportImageToVideo) {
       throw new ApiError(
         `Model ${params.model} does not support image-to-video`,
